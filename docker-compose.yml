@@ -30,7 +30,7 @@ services:
     prod:
         build:
             context: .
-            dockerfile: Dockerfile
+            dockerfile: ./dockerfiles/Dockerfile.website
             target: production
         ports:
             - '80:80'
