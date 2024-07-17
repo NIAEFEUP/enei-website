@@ -37,6 +37,8 @@ FROM trafex/php-nginx:3.4.0 AS deploy
 WORKDIR /var/www/html
 
 USER root
+
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN install-php-extensions pdo_pgsql pgsql redis iconv zip
 
 ## Install supercronic (cron alternative)
