@@ -9,6 +9,11 @@ ARG LARAVEL_ENV=production
 ARG LARAVEL_ENV_FILE=.env.${LARAVEL_ENV}
 ARG LARAVEL_ENV_FILE_KEY=""
 
+ENV APP_ENV=${LARAVEL_ENV}
+
+COPY ${LARAVEL_ENV_FILE} ./
+RUN [ -z "${LARAVEL_ENV_FILE_KEY}" ] || php artisan env:decrypt -n --env=${LARAVEL_ENV} --key=${LARAVEL_ENV_FILE_KEY}
+
 COPY app/ ./app/
 COPY bootstrap/ ./bootstrap/
 COPY config/ ./config/
@@ -17,10 +22,5 @@ COPY resources/ ./resources/
 COPY routes/ ./routes/
 COPY public/ ./public/
 COPY storage/ ./storage/
-COPY ${LARAVEL_ENV_FILE} ./
-
-ENV APP_ENV=${LARAVEL_ENV}
-
-RUN [ -z "${LARAVEL_ENV_FILE_KEY}" ] || php artisan env:decrypt -n --env=${LARAVEL_ENV} --key=${LARAVEL_ENV_FILE_KEY}
 
 CMD ["php", "artisan", "migrate", "-n", "--force"]
