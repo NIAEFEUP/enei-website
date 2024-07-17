@@ -57,14 +57,24 @@ COPY ./etc/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 USER nobody
 
-COPY --chown=nobody --from=laravel-build /app/ ./
-COPY --chown=nobody --from=assets-build /app/public/ ./public/
+ARG LARAVEL_ENV=production
+ARG LARAVEL_ENV_FILE=.env.${LARAVEL_ENV}
+ARG LARAVEL_ENV_FILE_KEY=""
+
+COPY --chown=nobody ${LARAVEL_ENV_FILE} ./
 COPY --chown=nobody public/ ./public/
 COPY --chown=nobody storage/ ./storage/
+COPY --chown=nobody --from=laravel-build /app/ ./
+COPY --chown=nobody --from=assets-build /app/public/ ./public/
 
+ENV APP_ENV=${LARAVEL_ENV}
+
+RUN [ -z "${LARAVEL_ENV_FILE_KEY}" ] || php artisan env:decrypt -n --env=${LARAVEL_ENV} --key=${LARAVEL_ENV_FILE_KEY}
 RUN php artisan storage:link -n
 RUN php artisan config:cache -n
 RUN php artisan event:cache -n
 RUN php artisan route:cache -n
 RUN php artisan view:cache -n
 RUN php artisan optimize -n
+
+RUN rm ${LARAVEL_ENV_FILE}
