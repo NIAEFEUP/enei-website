@@ -2,8 +2,7 @@
 FROM composer:2 AS migrate
 WORKDIR /app
 
-RUN apk add --no-cache php83-pdo_pgsql php83-pgsql php83-pecl-redis php83-iconv php83-zip
-COPY ./etc/php/php.ini ${PHP_INI_DIR}/conf.d/php.ini
+RUN install-php-extensions pdo_pgsql pgsql redis iconv zip
 
 COPY composer.json composer.lock artisan ./
 COPY app/ ./app/
