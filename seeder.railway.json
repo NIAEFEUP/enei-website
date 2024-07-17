@@ -3,5 +3,8 @@
     "build": {
         "builder": "DOCKERFILE",
         "dockerfilePath": "./dockerfiles/Dockerfile.seeder"
+    },
+    "deploy": {
+        "restartPolicyType": "NEVER"
     }
 }
