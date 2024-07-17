@@ -4,6 +4,6 @@
         "builder": "NIXPACKS"
     },
     "deploy": {
-        "startCommand": "php artisan migrate --force --seed --no-interaction --isolated --database=pgsql"
+        "startCommand": "sh -c 'php artisan migrate --force --seed --no-interaction --isolated'"
     }
 }
