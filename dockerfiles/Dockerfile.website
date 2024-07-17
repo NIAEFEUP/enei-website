@@ -33,13 +33,11 @@ COPY routes/ ./routes/
 RUN composer install --no-interaction --optimize-autoloader --no-dev --prefer-dist
 
 # deploy
-FROM trafex/php-nginx:3.4.0 AS deploy
+FROM trafex/php-nginx:3.6.0 AS deploy
 WORKDIR /var/www/html
 
 USER root
-
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN install-php-extensions pdo_pgsql pgsql redis iconv zip
+RUN apk add --no-cache php83-pdo_pgsql php83-pgsql php83-pecl-redis php83-iconv php83-zip
 
 ## Install supercronic (cron alternative)
 ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.2.26/supercronic-linux-amd64 \
@@ -53,6 +51,8 @@ RUN curl -fsSLO "$SUPERCRONIC_URL" \
     && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
 
 COPY ./etc/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./etc/php/php.ini ${PHP_INI_DIR}/conf.d/php.ini
+COPY --chown=nobody ./etc/crontab ./crontab
 COPY --chown=nobody ./etc/supervisord.conf ./supervisord.conf
 RUN cat ./supervisord.conf >> /etc/supervisor/conf.d/supervisord.conf
 RUN rm ./supervisord.conf
