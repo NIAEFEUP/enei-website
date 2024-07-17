@@ -3,7 +3,14 @@ FROM composer:2 AS migrate
 WORKDIR /app
 
 COPY composer.json composer.lock artisan ./
-RUN composer install --no-interaction --no-autoloader
+COPY app/ ./app/
+COPY bootstrap/ ./bootstrap/
+COPY config/ ./config/
+COPY database/ ./database/
+COPY resources/ ./resources/
+COPY routes/ ./routes/
+
+RUN composer install --no-interaction
 
 ARG LARAVEL_ENV=production
 ARG LARAVEL_ENV_FILE=.env.${LARAVEL_ENV}
@@ -14,12 +21,6 @@ ENV APP_ENV=${LARAVEL_ENV}
 COPY ${LARAVEL_ENV_FILE} ./
 RUN [ -z "${LARAVEL_ENV_FILE_KEY}" ] || php artisan env:decrypt -n --env=${LARAVEL_ENV} --key=${LARAVEL_ENV_FILE_KEY}
 
-COPY app/ ./app/
-COPY bootstrap/ ./bootstrap/
-COPY config/ ./config/
-COPY database/ ./database/
-COPY resources/ ./resources/
-COPY routes/ ./routes/
 COPY public/ ./public/
 COPY storage/ ./storage/
 
