@@ -26,4 +26,4 @@ RUN [ -z "${LARAVEL_ENV_FILE_KEY}" ] || php artisan env:decrypt -n --env=${LARAV
 COPY public/ ./public/
 COPY storage/ ./storage/
 
-CMD [ "sh", "-c", "php artisan app:create-db-schema && php artisan migrate -n"]
+CMD [ "sh", "-c", "php artisan app:create-db-schema && php artisan migrate --seed -n"]
