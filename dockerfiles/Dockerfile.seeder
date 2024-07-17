@@ -2,10 +2,7 @@
 FROM composer:2 AS migrate
 WORKDIR /app
 
-USER root
 RUN apk add --no-cache php82-pdo_pgsql php82-pgsql php82-pecl-redis php82-iconv php82-zip
-
-USER nobody
 
 COPY composer.json composer.lock artisan ./
 COPY app/ ./app/
