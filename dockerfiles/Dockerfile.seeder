@@ -26,8 +26,8 @@ ARG LARAVEL_ENV_FILE_KEY=""
 
 ENV APP_ENV=${LARAVEL_ENV}
 
-COPY ${LARAVEL_ENV_FILE} ./
-RUN [ -z "${LARAVEL_ENV_FILE_KEY}" ] || php artisan env:decrypt -n --env=${LARAVEL_ENV} --key=${LARAVEL_ENV_FILE_KEY}
+COPY --chown=nobody ${LARAVEL_ENV_FILE} ./.env.${LARAVEL_ENV}
+RUN [ -z "${LARAVEL_ENV_FILE_KEY}" ] || ( mv .env.${LARAVEL_ENV} .env.${LARAVEL_ENV}.encrypted && php artisan env:decrypt -n --env=${LARAVEL_ENV} --key=${LARAVEL_ENV_FILE_KEY} )
 
 COPY public/ ./public/
 COPY storage/ ./storage/
