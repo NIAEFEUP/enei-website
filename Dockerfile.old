@@ -51,8 +51,6 @@ RUN cat ./supervisord.conf >> /etc/supervisor/conf.d/supervisord.conf
 
 USER nobody
 
-COPY --chown=nobody ./.env.prod ./.env
-
 COPY --chown=nobody --from=dependencies /app/vendor ./vendor
 COPY --chown=nobody --from=assets /app/public ./public
 COPY --chown=nobody ./app ./app
@@ -67,7 +65,6 @@ COPY --chown=nobody ./resources ./resources
 COPY --chown=nobody ./routes ./routes
 COPY --chown=nobody ./storage ./storage
 
-RUN php artisan key:generate --force
 RUN php artisan storage:link
 RUN php artisan config:cache
 RUN php artisan event:cache
