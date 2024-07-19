@@ -1,8 +1,6 @@
-# migrate
-FROM composer:2 AS migrate
+# dependencies
+FROM composer:2 AS dependencies
 WORKDIR /app
-
-RUN install-php-extensions pdo_pgsql pgsql redis iconv zip
 
 COPY composer.json composer.lock artisan ./
 COPY app/ ./app/
@@ -13,6 +11,14 @@ COPY resources/ ./resources/
 COPY routes/ ./routes/
 
 RUN composer install --no-interaction
+
+# migrate
+FROM composer:2 AS migrate
+WORKDIR /app
+
+RUN install-php-extensions pdo_pgsql pgsql redis iconv zip
+
+COPY --from=dependencies /app ./
 
 ARG LARAVEL_ENV=production
 ARG LARAVEL_ENV_FILE=.env.${LARAVEL_ENV}
@@ -26,4 +32,4 @@ RUN [ -z "${LARAVEL_ENV_FILE_KEY}" ] || php artisan env:decrypt -n --env=${LARAV
 COPY public/ ./public/
 COPY storage/ ./storage/
 
-CMD [ "sh", "-c", "php artisan app:create-db-schema && php artisan migrate -n"]
+CMD [ "php", "artisan", "migrate", "-n"]  
