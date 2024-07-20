@@ -14,18 +14,25 @@ defineProps<Props>();
 <template>
     <div>
         <Head :title="title" />
-        <div class="sticky top-0 z-30">
-            <Navbar />
-            <Banner />
+        <div class="test">
+            <div class="sticky top-0 z-30">
+                <Navbar />
+                
+            </div>
+            <main class="min-h-screen ">
+                <slot />
+            </main>
         </div>
-        <main class="min-h-screen bg-2023-bg">
-            <slot />
-        </main>
         <Footer />
     </div>
 </template>
 
 <style>
+.test{
+    background-image: url('/images/landing-page-background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
 html {
     scroll-behavior: smooth;
 }

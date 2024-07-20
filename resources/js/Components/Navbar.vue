@@ -19,17 +19,17 @@ interface Route {
 type Routes = Record<string, Route>;
 
 const homeSections: Routes = {
-    aboutus: {
+    /*aboutus: {
         label: "Sobre nós",
     },
     speakers: { label: "Oradores" },
-    sponsors: { label: "Patrocínios" },
+    sponsors: { label: "Patrocínios" },*/
 };
 
 const pageRoutes: Routes = {
-    program: { label: "Programa" },
+    /*program: { label: "Programa" },
     "shop.show": { label: "Loja" },
-    team: { label: "Equipa" },
+    team: { label: "Equipa" },*/
 };
 
 const editionRoutes = [2022, 2021, 2020, 2019, 2018];
@@ -46,14 +46,14 @@ const isAdmin = checkIsAdmin(props.auth.user);
 </script>
 
 <template>
-    <nav class="flex border-b-2 border-black bg-2023-bg py-2">
+    <nav class="flex bg-enei-beige py-4">
         <Dropdown align="center" width="32" class="ml-10 max-md:hidden">
             <template #trigger>
                 <DropdownTrigger class="group">
                     <a :href="route('home')">
                         <img
-                            class="w-24 max-md:w-16"
-                            src="/images/cy-sinf-small.svg"
+                            class="w-48 max-md:w-24"
+                            src="/images/enei-logo.png"
                             alt="Stylized SINF logo"
                         />
                     </a>
@@ -72,7 +72,7 @@ const isAdmin = checkIsAdmin(props.auth.user);
         <NavLink :href="route('home')" class="md:hidden">
             <img
                 class="w-24 max-md:w-16"
-                src="/images/cy-sinf-small.svg"
+                src="/images/enei-logo.png"
                 alt="Stylized SINF logo"
             />
         </NavLink>
@@ -92,7 +92,8 @@ const isAdmin = checkIsAdmin(props.auth.user);
                     {{ label }}
                 </NavLink>
             </template>
-            <Dropdown
+            <!-- COMPETITIONS DROPDOWN -->
+            <!--<Dropdown
                 v-if="props.competitions.length > 0"
                 align="center"
                 width="32"
@@ -112,31 +113,10 @@ const isAdmin = checkIsAdmin(props.auth.user);
                         </DropdownLink>
                     </template>
                 </template>
-            </Dropdown>
+            </Dropdown>-->
         </div>
 
         <div class="mr-4 flex w-full justify-end">
-            <div class="hidden h-full gap-1 md:flex lg:gap-4">
-                <Dropdown align="center" width="20">
-                    <template #trigger>
-                        <DropdownTrigger> 2023 </DropdownTrigger>
-                    </template>
-                    <template #content>
-                        <template
-                            v-for="edition in editionRoutes"
-                            :key="edition"
-                        >
-                            <DropdownLink
-                                as="a"
-                                :href="`https://${edition}.sinf.pt`"
-                            >
-                                {{ edition }}
-                            </DropdownLink>
-                        </template>
-                    </template>
-                </Dropdown>
-            </div>
-
             <div class="ml-2 flex items-center lg:mx-4">
                 <template v-if="$page.props.auth.user">
                     <Dropdown align="right" :width="isAdmin ? '32' : '20'">
@@ -164,9 +144,10 @@ const isAdmin = checkIsAdmin(props.auth.user);
                     </Dropdown>
                 </template>
                 <template v-else>
-                    <a :href="route('login')">
-                        <OhVueIcon name="io-person" scale="1.7" fill="#025259">
-                        </OhVueIcon>
+                    <a :href="route('login')" class="bg-enei-blue text-enei-beige px-2 py-2 md:px-4 font-space-grotesk font-bold">
+                        Login
+                        <!--<OhVueIcon name="io-person" scale="1.7" fill="#025259">
+                        </OhVueIcon>-->
                     </a>
                 </template>
             </div>
