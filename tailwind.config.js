@@ -19,7 +19,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
-                'space-grotesk': ['Space Grotesk', 'sans-serif'],
+                "space-grotesk": ["Space Grotesk", "sans-serif"],
             },
             colors: {
                 "2023-bg": "rgb(248, 245, 231)",
@@ -29,7 +29,7 @@ export default {
                 "2023-teal-dark": "rgb(2, 82, 89)",
                 "2023-orange": "rgb(242, 147, 37)",
                 "enei-blue": "#0B4F6C",
-                "enei-beige": "#dcd7c2"
+                "enei-beige": "#dcd7c2",
             },
             boxShadow: {
                 sm: "2px 2px 0 -1px var(--tw-shadow-color, currentColor), 2px 2px 0 0 black",

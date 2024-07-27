@@ -9,7 +9,7 @@ import route, {
     type RouteParamsWithQueryOverload,
 } from "ziggy-js";
 import { usePage } from "@inertiajs/vue3";
-import { OhVueIcon } from "oh-vue-icons";
+//import { OhVueIcon } from "oh-vue-icons";
 import { isAdmin as checkIsAdmin } from "@/Types/User";
 
 interface Route {
@@ -46,7 +46,7 @@ const isAdmin = checkIsAdmin(props.auth.user);
 </script>
 
 <template>
-    <nav class="flex bg-enei-beige py-4">
+    <nav class="z-1000 flex bg-transparent py-4">
         <Dropdown align="center" width="32" class="ml-10 max-md:hidden">
             <template #trigger>
                 <DropdownTrigger class="group">
@@ -71,7 +71,7 @@ const isAdmin = checkIsAdmin(props.auth.user);
         </Dropdown>
         <NavLink :href="route('home')" class="md:hidden">
             <img
-                class="w-24 max-md:w-16"
+                class="w-24 max-md:w-24"
                 src="/images/enei-logo.png"
                 alt="Stylized SINF logo"
             />
@@ -144,7 +144,10 @@ const isAdmin = checkIsAdmin(props.auth.user);
                     </Dropdown>
                 </template>
                 <template v-else>
-                    <a :href="route('login')" class="bg-enei-blue text-enei-beige px-2 py-2 md:px-4 font-space-grotesk font-bold">
+                    <a
+                        :href="route('login')"
+                        class="bg-enei-blue px-2 py-2 font-space-grotesk font-bold text-enei-beige md:px-4"
+                    >
                         Login
                         <!--<OhVueIcon name="io-person" scale="1.7" fill="#025259">
                         </OhVueIcon>-->

@@ -3,13 +3,14 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 /*import SpeakersCarousel from "@/Components/Home/SpeakersCarousel.vue";
 import SponsorBanner from "@/Components/Home/SponsorBanner.vue";
 import EnrollSection from "@/Components/Home/EnrollSection.vue";*/
-import InfoPopup from "@/Components/Home/InfoPopup.vue";
 import type Edition from "@/Types/Edition";
 import type EventDay from "@/Types/EventDay";
 import type { User } from "@/Types/User";
-import { OhVueIcon } from "oh-vue-icons";
 import type SponsorTier from "@/Types/SponsorTier";
+import Navbar from "@/Components/Navbar.vue";
 //import { default as MapComponent } from "@/Components/Home/Map.vue";
+//import InfoPopup from "@/Components/Home/InfoPopup.vue";
+//import { OhVueIcon } from "oh-vue-icons";
 
 interface Props {
     edition: Edition;
@@ -24,7 +25,7 @@ interface Props {
 
 defineProps<Props>();
 
-const formattedDate = (
+/*const formattedDate = (
     startDate: string,
     separator: string,
     endDate: string,
@@ -45,145 +46,65 @@ const formattedDate = (
         .join(" ");
 
     return `${startDate} ${separator} ${endDate}`;
-};
+};*/
 </script>
 
 <template>
-    <AppLayout title="Home">
-        <InfoPopup v-if="$page.props.auth.user && canEnroll" />
-        <a
-            v-if="canEnroll"
-            href="#enroll-wrapper"
-            class="group fixed bottom-10 right-12 z-50 cursor-pointer border border-black bg-2023-red-dark p-2 px-3 font-bold text-white shadow shadow-2023-teal"
-        >
+    <AppLayout title="Home" :show-navbar="false">
+        <div class="background">
+            <div class="sticky left-0 right-0 top-0 z-30">
+                <Navbar />
+            </div>
+            <!--<InfoPopup v-if="$page.props.auth.user && canEnroll" />
+            <a
+                v-if="canEnroll"
+                href="#enroll-wrapper"
+                class="group fixed bottom-10 right-12 z-50 cursor-pointer border border-black bg-2023-red-dark p-2 px-3 font-bold text-white shadow shadow-2023-teal"
+            >
             <OhVueIcon name="io-arrow-down" fill="white" />
-        </a>
-        <!-- LOGO & DATE -->
-        <section
-            class="relative flex flex-col min-h-screen md:justify-evenly gap-8 py-36 md:py-16"
-        >
-            <div class="mx-auto md:ml-36">
-                <h1 class="font-space-grotesk font-bold text-white w-3/12 text-5xl md:text-7xl text-justify tracking-tight">
-                    <p class="whitespace-nowrap">ENCONTRO</p>
-                    <p class="whitespace-nowrap">NACIONAL DE</p>
-                    <p class="whitespace-nowrap">ESTUDANTES DE</p>
-                    <p class="whitespace-nowrap">INFORMÁTICA</p>
-                </h1>
-                <p class="text-white text-2xl md:text-4xl font-space-grotesk">
-                    PORTO 2025
-                </p>
-            </div>
-            <div class="mx-auto">
-                <p
-                    class="mr-2 p-2.5 px-8 text-lg font-bold bg-2023-bg text-enei-blue font-space-grotesk font-bold text-lg text-center w-48"
-                >
-                    BREVEMENTE
-                </p>
-            </div>
-        </section>
-        <!-- ABOUT US -->
-        <section
-            class="relative grid grid-flow-row grid-cols-2 border-t border-black bg-2023-teal-dark text-justify max-lg:grid-flow-col max-lg:grid-cols-1 max-lg:grid-rows-2"
-        >
-            <h2
-                id="aboutus"
-                class="absolute -top-9 left-[calc(50%-88.2415px)] border border-solid border-black bg-2023-red p-3 text-3xl font-bold text-white shadow-md shadow-2023-bg"
+            </a>-->
+            <!-- LOGO & DATE -->
+            <section
+                class="relative flex min-h-screen flex-col gap-8 py-36 md:justify-evenly md:py-16"
             >
-                Sobre nós
-            </h2>
-            <p class="p-20 text-lg text-white max-lg:pb-10">
-                {{ $t("homePage.aboutUsText1") }}
-            </p>
-            <p class="p-20 text-lg text-white max-lg:py-10">
-                {{ $t("homePage.aboutUsText2") }}
-            </p>
-        </section>
-        <!-- GENERAL INFO -->
-        <!--<section class="relative flex flex-col py-24 max-xs:items-center">
-            <h2
-                class="absolute left-[calc(10%+70px)] top-14 w-fit border border-solid border-black bg-2023-orange p-2 text-2xl font-bold text-white shadow-md shadow-2023-teal-dark max-xs:relative max-xs:left-0 max-xs:top-6"
-            >
-                Este ano temos...
-            </h2>
-            <template
-                v-if="
-                    days.length !== 0 ||
-                    standCount !== 0 ||
-                    talkCount !== 0 ||
-                    activityCount !== 0
-                "
-            >
-                <div
-                    class="mx-[10%] grid gap-4 border border-solid border-black p-12 text-xl font-bold text-2023-teal shadow-2xl shadow-2023-orange max-lg:grid-cols-2 max-xs:grid-cols-1 md:flex md:flex-row md:items-center md:justify-around"
-                >
-                    <span v-if="days.length !== 0" class="text-center"
-                        >{{ days.length }} dias</span
+                <div class="mx-auto md:ml-36">
+                    <h1
+                        class="w-3/12 text-justify font-space-grotesk text-5xl font-bold tracking-tight text-white md:text-7xl"
                     >
-                    <span v-if="standCount !== 0" class="text-center"
-                        >{{ standCount }} bancas</span
+                        <p class="whitespace-nowrap">ENCONTRO</p>
+                        <p class="whitespace-nowrap">NACIONAL DE</p>
+                        <p class="whitespace-nowrap">ESTUDANTES DE</p>
+                        <p class="whitespace-nowrap">INFORMÁTICA</p>
+                    </h1>
+                    <p
+                        class="font-space-grotesk text-2xl text-white md:text-4xl"
                     >
-                    <span v-if="talkCount !== 0" class="text-center"
-                        >{{ talkCount }} palestras</span
-                    >
-                    <span v-if="activityCount !== 0" class="text-center"
-                        >{{ activityCount }} atividades</span
-                    >
+                        PORTO 2025
+                    </p>
                 </div>
-            </template>
-            <template v-else>
-                <div
-                    class="mx-[10%] flex items-center justify-center gap-4 border border-solid border-black p-12 text-xl font-bold text-2023-teal shadow-2xl shadow-2023-orange max-lg:grid-cols-2 max-xs:grid-cols-1"
-                >
-                    Muitas novidades para ti! Está quase...
+                <div class="mx-auto">
+                    <p
+                        class="mr-2 w-48 bg-2023-bg p-2.5 px-8 text-center font-space-grotesk text-lg text-lg font-bold font-bold text-enei-blue"
+                    >
+                        BREVEMENTE
+                    </p>
                 </div>
-            </template>
-        </section>-->
-        <!-- SPEAKERS -->
-        <!--<section
-            id="speakers"
-            class="grid-rows-[repeat(3, 1fr)] my-10 mb-5 grid grid-cols-1 gap-10"
-        >
-            <p
-                class="mr-[5px] flex w-fit place-self-center border border-solid border-black bg-2023-red-dark p-3 text-2xl font-bold text-white shadow shadow-2023-bg"
-            >
-                Oradores
-            </p>
-            <template v-if="speakers.length != 0">
-                <SpeakersCarousel :speakers="speakers ?? []"></SpeakersCarousel>
-            </template>
-            <template v-else>
-                <p
-                    class="flex w-fit place-self-center text-2xl font-bold text-2023-teal-dark"
-                >
-                    Em breve...
-                </p>
-            </template>
-        </section>-_>
-        <!-- SPONSORS -->
-        <!--<section id="sponsors" class="flex flex-col gap-10 px-20 py-20">
-            <p
-                class="mr-[5px] flex w-min place-self-center border border-solid border-black bg-2023-teal-dark p-3 text-2xl font-bold text-white shadow shadow-2023-bg"
-            >
-                Patrocínios
-            </p>
-            <SponsorBanner
-                v-for="(tier, idx) in sponsorTiers"
-                :key="tier.id"
-                :title="tier.name"
-                :sponsors="tier.sponsors ?? []"
-                :color="tier.color"
-                :idx="idx"
-            ></SponsorBanner>
-        </section>-->
-        <!-- CALL TO ACTION -->
-        <!--<EnrollSection v-if="canEnroll" id="enroll-wrapper" />-->
-        <!-- MAP -->
-        <!--<section class="bg-2023-orange p-10">
-            <MapComponent />
-        </section>-->
+            </section>
+        </div>
     </AppLayout>
 </template>
 
 <style>
+.background {
+    background-image: url("/images/landing-page-background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
 
+@media (max-width: 768px) {
+    .background {
+        background-size: auto 100%; /* Ensures the background zooms in horizontally */
+        background-position: bottom;
+    }
+}
 </style>
