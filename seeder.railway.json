@@ -5,7 +5,8 @@
         "dockerfilePath": "./dockerfiles/Dockerfile.seeder"
     },
     "deploy": {
-        "restartPolicyType": "NEVER",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 20,
         "sleepApplication": false
     }
 }
