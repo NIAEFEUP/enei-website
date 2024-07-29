@@ -1,4 +1,4 @@
-bootstrap/cache/*
+bootstrap/cache/services.php
 
 storage/app/*
 storage/framework/cache/*
