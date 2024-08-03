@@ -93,6 +93,7 @@ services:
             retries: 3
             timeout: 5s
     meilisearch:
+        container_name: meilisearch
         image: 'getmeili/meilisearch:latest'
         ports:
             - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'

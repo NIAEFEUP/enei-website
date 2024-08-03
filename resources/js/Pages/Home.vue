@@ -51,7 +51,7 @@ defineProps<Props>();
 
 <template>
     <AppLayout title="Home" :show-navbar="false">
-        <div class="background">
+        <div class="background min-h-screen flex flex-col">
             <div class="sticky left-0 right-0 top-0 z-30">
                 <Navbar />
             </div>
@@ -65,7 +65,7 @@ defineProps<Props>();
             </a>-->
             <!-- LOGO & DATE -->
             <section
-                class="relative flex min-h-screen flex-col gap-8 py-36 md:justify-evenly md:py-16"
+                class=" grow relative flex flex-col gap-8 py-36 md:justify-evenly md:py-0"
             >
                 <div class="mx-auto md:ml-36">
                     <h1
