@@ -98,6 +98,11 @@ class User extends Authenticatable
         return $this->usertype_type === Speaker::class;
     }
 
+    public function isStudentAssociation(): bool
+    {
+        return $this->usertype_type === StudentAssociation::class;
+    }
+
     public function isStaff(Edition $edition): bool
     {
         return $this->isParticipant() && $edition->through('departments')->has('staff')->where('participant_id', $this->usertype_id)->exists();
