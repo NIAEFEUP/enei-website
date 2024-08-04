@@ -26,7 +26,14 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+            'promoter' => ['optional', 'string'],
         ])->validate();
+
+        $promoter = $input['promoter'];
+
+        if (! is_null($promoter)) {
+            // TODO: Trigger promoter point attribution algorithm
+        }
 
         $data = [
             'name' => $input['name'],

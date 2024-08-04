@@ -6,11 +6,18 @@ import TextInput from "@/Components/TextInput.vue";
 import CardLayout from "../../Layouts/CardLayout.vue";
 import route from "ziggy-js";
 
+interface Props {
+    promoter?: string;
+}
+
+defineProps<Props>();
+
 const form = useForm({
     name: "",
     email: "",
     password: "",
     password_confirmation: "",
+    promoter: "",
     terms: false,
 });
 
@@ -63,6 +70,15 @@ const submit = () => {
                 required
                 autocomplete="new-password"
                 :error-message="form.errors.password_confirmation"
+            />
+
+            <TextInput
+                id="promoter"
+                v-model="form.promoter"
+                label="Código de promotor"
+                type="text"
+                required
+                :error-message="form.errors.promoter"
             />
 
             <label
