@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\RegisterViewResponse;
@@ -34,15 +35,17 @@ class RegisteredUserController extends Controller
     /**
      * Show the registration view.
      */
-    public function create(Request $request): RegisterViewResponse
+    public function create(Request $request)
     {
         $promoter = null;
         if ($request->is('register/promoter/*')) {
             $promoter = $request->route('promoter');
-            dd($promoter);
         }
 
-        return app(RegisterViewResponse::class);
+        // return app(RegisterViewResponse::class);
+        return Inertia::render('Auth/Register', [
+            'promoter' => $promoter,
+        ]);
     }
 
     /**

@@ -10,14 +10,16 @@ interface Props {
     promoter?: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+console.log(props.promoter, props.promoter !== null)
 
 const form = useForm({
     name: "",
     email: "",
     password: "",
     password_confirmation: "",
-    promoter: "",
+    promoter: props.promoter ?? "",
     terms: false,
 });
 
@@ -77,7 +79,7 @@ const submit = () => {
                 v-model="form.promoter"
                 label="Código de promotor"
                 type="text"
-                required
+                :disabled="promoter !== null"
                 :error-message="form.errors.promoter"
             />
 
