@@ -13,8 +13,6 @@ const id = computed(() => usePage().props.jetstream.flash?.bannerId || "");
 watch(id, async () => {
     show.value = true;
 });
-
-console.log("Banner.vue");
 </script>
 
 <template>
