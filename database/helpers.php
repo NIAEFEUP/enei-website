@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Schema;
  * @param  \Illuminate\Database\Eloquent\Model|string  $model1
  * @param  \Illuminate\Database\Eloquent\Model|string  $model2
  */
-function createManyToManyRelation($model1, $model2)
+function createManyToManyRelation($model1, $model2, ?\Closure $additional_fields)
 {
 
     // We need to ensure lexicographical order because Laravel
@@ -29,9 +29,13 @@ function createManyToManyRelation($model1, $model2)
 
     $table_name = rtrim($model1->getTable(), 's').'_'.rtrim($model2->getTable(), 's');
 
-    Schema::create($table_name, function (Blueprint $table) use ($model1, $model2) {
+    Schema::create($table_name, function (Blueprint $table) use ($model1, $model2, $additional_fields) {
         $table->foreignIdFor($model1)->constrained()->cascadeOnDelete();
         $table->foreignIdFor($model2)->constrained()->cascadeOnDelete();
         $table->primary([$model1->getForeignKey(), $model2->getForeignKey()]);
+
+        if ($additional_fields) {
+            $additional_fields($table);
+        }
     });
 }

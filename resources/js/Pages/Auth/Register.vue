@@ -12,8 +12,6 @@ interface Props {
 
 const props = defineProps<Props>();
 
-console.log(props.promoter, props.promoter !== null)
-
 const form = useForm({
     name: "",
     email: "",

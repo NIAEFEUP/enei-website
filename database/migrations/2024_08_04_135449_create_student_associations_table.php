@@ -1,9 +1,13 @@
 <?php
 
+use App\Models\Edition;
+use App\Models\StudentAssociation;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
+use function DatabaseHelpers\createManyToManyRelation;
 
 return new class extends Migration
 {
@@ -18,6 +22,10 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('code');
+        });
+
+        createManyToManyRelation(StudentAssociation::class, Edition::class, function (Blueprint $table) {
+            $table->integer('points')->unsigned();
         });
     }
 
