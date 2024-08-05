@@ -31,7 +31,7 @@ services:
         build:
             context: .
             dockerfile: ./dockerfiles/Dockerfile.website
-            target: deploy
+            target: deploy-nocache
             args:
                 - LARAVEL_ENV=local
                 - LARAVEL_ENV_FILE=.env
@@ -93,7 +93,6 @@ services:
             retries: 3
             timeout: 5s
     meilisearch:
-        container_name: meilisearch
         image: 'getmeili/meilisearch:latest'
         ports:
             - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'

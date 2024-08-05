@@ -32,17 +32,17 @@ const pageRoutes: Routes = {
     team: { label: "Equipa" },*/
 };
 
-const editionRoutes = [2022, 2021, 2020, 2019, 2018];
+// const editionRoutes = [2022, 2021, 2020, 2019, 2018];
 
-const { props } = usePage();
+// const { props } = usePage();
 
-const options = {
-    pages: pageRoutes,
-    competitions: props.competitions,
-    editions: editionRoutes,
-};
+// const options = {
+//     pages: pageRoutes,
+//     competitions: props.competitions,
+//     editions: editionRoutes,
+// };
 
-const isAdmin = checkIsAdmin(props.auth.user);
+// const isAdmin = checkIsAdmin(props.auth.user);
 </script>
 
 <template>
@@ -118,7 +118,7 @@ const isAdmin = checkIsAdmin(props.auth.user);
 
         <div class="mr-4 flex w-full justify-end">
             <div class="ml-2 flex items-center lg:mx-4">
-                <template v-if="$page.props.auth.user">
+                <!-- <template v-if="$page.props.auth.user">
                     <Dropdown align="right" :width="isAdmin ? '32' : '20'">
                         <template #trigger>
                             <img
@@ -149,13 +149,13 @@ const isAdmin = checkIsAdmin(props.auth.user);
                         class="bg-enei-blue px-2 py-2 font-space-grotesk font-bold text-enei-beige md:px-4"
                     >
                         Login
-                        <!--<OhVueIcon name="io-person" scale="1.7" fill="#025259">
-                        </OhVueIcon>-->
+                        <OhVueIcon name="io-person" scale="1.7" fill="#025259">
+                        </OhVueIcon>
                     </a>
-                </template>
+                </template> -->
             </div>
 
-            <HamburgerMenu :options="options" />
+            <!-- <HamburgerMenu :options="options" /> -->
         </div>
     </nav>
 </template>
