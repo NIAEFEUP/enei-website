@@ -1,27 +1,28 @@
 <script setup lang="ts">
 import { Head } from "@inertiajs/vue3";
 import Navbar from "@/Components/Navbar.vue";
-import Footer from "@/Components/Footer.vue";
-import Banner from "@/Components/Banner.vue";
+//import Footer from "@/Components/Footer.vue";
+//import Banner from "@/Components/Banner.vue";
 
 interface Props {
     title: string;
+    showNavbar?: boolean;
 }
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+    showNavbar: true,
+});
 </script>
 
 <template>
     <div>
         <Head :title="title" />
-        <div class="sticky top-0 z-30">
+        <div v-show="showNavbar" class="sticky left-0 right-0 top-0 z-30">
             <Navbar />
-            <Banner />
         </div>
-        <main class="min-h-screen bg-2023-bg">
+        <main class="min-h-screen">
             <slot />
         </main>
-        <Footer />
     </div>
 </template>
 
