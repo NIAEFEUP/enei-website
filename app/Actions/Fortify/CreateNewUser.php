@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\Participant;
+use App\Models\StudentAssociation;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -21,20 +22,40 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        dd($input);
-
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
-            'promoter' => ['optional', 'string'],
+            'promoter' => ['nullable', 'string'],
         ])->validate();
 
-        $promoter = $input['promoter'];
+        $promoter = $input['promoter'] ?? null;
+
+        $promoter_code = null;
 
         if (! is_null($promoter)) {
-            // TODO: Trigger promoter point attribution algorithm
+
+            /*
+            $participant = Participant::firstWhere('code', $promoter);
+            if (!is_null($participant)) {
+                $participant->points = $participant->points + 10;
+                $promoter = $participant->code;
+            }
+            */
+
+            $student_association = StudentAssociation::firstWhere('code', $promoter);
+            if (!is_null($student_association)) {
+                $student_association->points = $student_association->points + 20;
+
+                $promoter_code = $student_association->code;
+
+                // save
+                if (!is_null($promoter_code)) {
+                    // $participant->save();
+                    $student_association->save();
+                }
+            }
         }
 
         $data = [
@@ -46,7 +67,7 @@ class CreateNewUser implements CreatesNewUsers
         ];
 
         $user = User::create($data);
-        $participant = Participant::create(['user_id' => $user->id]);
+        $participant = Participant::create(['user_id' => $user->id, 'code', $promoter_code]);
         $user->usertype()->associate($participant);
         $user->save();
 
