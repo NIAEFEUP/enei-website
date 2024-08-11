@@ -51,8 +51,8 @@ import Navbar from "@/Components/Navbar.vue";
 
 .gradient-overlay {
     mix-blend-mode: plus-darker;
-    background: linear-gradient(180deg, #EFE3CA 0%, #0B4F6C 100%);
-    opacity: 80%;
+    background: linear-gradient(180deg, #0B4F6C 8%, #EFE3CA 100%);
+    opacity: 92%;
 }
 
 

@@ -53,7 +53,7 @@ const pageRoutes: Routes = {
                     <a :href="route('home')">
                         <img
                             class="w-48 max-md:w-24"
-                            src="/images/enei-logo.png"
+                            src="/images/logo-white.svg"
                             alt="Stylized SINF logo"
                         />
                     </a>
@@ -72,7 +72,7 @@ const pageRoutes: Routes = {
         <NavLink :href="route('home')" class="md:hidden">
             <img
                 class="w-24 max-md:w-24"
-                src="/images/enei-logo.png"
+                src="/images/logo-white.svg"
                 alt="Stylized SINF logo"
             />
         </NavLink>
