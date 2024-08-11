@@ -6,8 +6,8 @@ import Navbar from "@/Components/Navbar.vue";
 <template>
     <AppLayout title="Home" :show-navbar="false">
         <div class="min-h-screen flex flex-col">
-            <div class="absolute inset-0 background z-2"></div>
-            <div class="absolute inset-0 gradient-overlay z-0"></div>
+            <div class="absolute inset-0 background z-2 min-h-screen"></div>
+            <div class="absolute inset-0 gradient-overlay z-0 min-h-screen"></div>
             <div class="sticky left-0 right-0 top-0 z-30">
                 <Navbar class="p-5" />
             </div>
