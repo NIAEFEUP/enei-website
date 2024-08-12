@@ -31,7 +31,7 @@ import Navbar from "@/Components/Navbar.vue";
                 </div>
                 <div class="mx-auto">
                     <p
-                        class="mr-2 w-48 bg-2023-bg p-2.5 px-8 text-center font-space-grotesk text-lg text-lg font-bold font-bold text-enei-blue uppercase"
+                        class="mr-2 w-48 bg-enei-beige p-2.5 px-8 text-center font-space-grotesk text-lg text-lg font-bold font-bold text-enei-blue uppercase"
                     >
                         Brevemente
                     </p>
