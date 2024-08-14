@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StudentAssociation extends Model
 {
@@ -32,6 +33,11 @@ class StudentAssociation extends Model
     public function editions(): BelongsToMany
     {
         return $this->belongsToMany(Edition::class)->using(StudentAssociationParticipation::class)->withPivot('points');
+    }
+
+    public function promoted(): HasMany
+    {
+        return $this->hasMany(Participant::class, 'promoter');
     }
 
     public function toSearchableArray(): array

@@ -31,6 +31,7 @@ class Participant extends Model
     protected $fillable = [
         'user_id',
         'social_media_id',
+        'promoter',
     ];
 
     protected $with = ['socialMedia'];
@@ -68,6 +69,11 @@ class Participant extends Model
     public function competitionTeams(): BelongsToMany
     {
         return $this->belongsToMany(CompetitionTeam::class)->using(CompetitionTeamParticipant::class);
+    }
+
+    public function promoter(): BelongsTo
+    {
+        return $this->belongsTo(StudentAssociation::class, 'promoter');
     }
 
     public function toSearchableArray(): array
