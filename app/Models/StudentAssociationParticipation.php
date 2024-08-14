@@ -36,4 +36,6 @@ class StudentAssociationParticipation extends Pivot
         return [
         ];
     }
+
+    protected $table = 'edition_student_association';
 }

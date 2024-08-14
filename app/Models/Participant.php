@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasCV;
+use App\Traits\HasReferralLink;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -20,6 +21,7 @@ class Participant extends Model
 {
     use HasCV;
     use HasFactory;
+    use HasReferralLink;
 
     /**
      * The attributes that are mass assignable.

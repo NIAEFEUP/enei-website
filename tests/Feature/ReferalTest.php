@@ -2,15 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use App\Models\Participant;
 use App\Models\StudentAssociation;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Features;
 use Laravel\Jetstream\Jetstream;
+use Tests\TestCase;
 
 class ReferalTest extends TestCase
 {
@@ -63,7 +62,6 @@ class ReferalTest extends TestCase
         $promoter_code = 'NUC-1';
         $association_name = 'Test Association';
 
-
         $association_data = [
             'name' => $association_name,
             'email' => 'test@association.com',
@@ -76,13 +74,12 @@ class ReferalTest extends TestCase
         $test_association = StudentAssociation::create(
             [
                 'user_id' => $association_user->id,
-                'name'    => $association_data['name'],
-                'code'    => $promoter_code
+                'name' => $association_data['name'],
+                'code' => $promoter_code,
             ]
         );
         $association_user->usertype()->associate($test_association);
         $association_user->save();
-
 
         $response = $this->post('/register/', [
             'name' => $username,
