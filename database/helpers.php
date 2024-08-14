@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Schema;
  * @param  \Illuminate\Database\Eloquent\Model|string  $model1
  * @param  \Illuminate\Database\Eloquent\Model|string  $model2
  */
-function createManyToManyRelation($model1, $model2, ?\Closure $additional_fields)
+function createManyToManyRelation($model1, $model2, \Closure $additional_fields = null)
 {
 
     // We need to ensure lexicographical order because Laravel
@@ -34,7 +34,7 @@ function createManyToManyRelation($model1, $model2, ?\Closure $additional_fields
         $table->foreignIdFor($model2)->constrained()->cascadeOnDelete();
         $table->primary([$model1->getForeignKey(), $model2->getForeignKey()]);
 
-        if ($additional_fields) {
+        if (! is_null($additional_fields)) {
             $additional_fields($table);
         }
     });

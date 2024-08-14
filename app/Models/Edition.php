@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Laravel\Scout\Searchable;
@@ -100,6 +101,11 @@ class Edition extends Model
     public function competitions(): HasMany
     {
         return $this->hasMany(Competition::class)->orderBy('name');
+    }
+
+    public function student_associations(): BelongsToMany
+    {
+        return $this->belongsToMany(StudentAssociation::class)->using(StudentAssociationParticipation::class)->withPivot('points');
     }
 
     public function toSearchableArray(): array
