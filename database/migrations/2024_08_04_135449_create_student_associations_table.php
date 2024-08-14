@@ -22,11 +22,11 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('code');
-            $table->integer('points')->unsigned()->default(0);
+            // $table->integer('points')->unsigned()->default(0);
         });
 
         createManyToManyRelation(StudentAssociation::class, Edition::class, function (Blueprint $table) {
-            $table->integer('points')->unsigned();
+            $table->integer('points')->unsigned()->default(0);
         });
     }
 
