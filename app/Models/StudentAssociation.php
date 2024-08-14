@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasReferralLink;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class StudentAssociation extends Model
 {
     use HasFactory;
+    use HasReferralLink;
 
     /**
      * The attributes that are mass assignable.

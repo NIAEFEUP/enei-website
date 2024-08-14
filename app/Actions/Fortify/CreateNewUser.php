@@ -44,6 +44,7 @@ class CreateNewUser implements CreatesNewUsers
             }
             */
 
+            /*
             $student_association = StudentAssociation::firstWhere('code', $promoter);
             if (!is_null($student_association)) {
                 $student_association->points = $student_association->points + 20;
@@ -56,6 +57,7 @@ class CreateNewUser implements CreatesNewUsers
                     $student_association->save();
                 }
             }
+            */
         }
 
         $data = [
@@ -67,7 +69,8 @@ class CreateNewUser implements CreatesNewUsers
         ];
 
         $user = User::create($data);
-        $participant = Participant::create(['user_id' => $user->id, 'code', $promoter_code]);
+        // $participant = Participant::create(['user_id' => $user->id, 'code', $promoter_code]);
+        $participant = Participant::create(['user_id' => $user->id]);
         $user->usertype()->associate($participant);
         $user->save();
 
