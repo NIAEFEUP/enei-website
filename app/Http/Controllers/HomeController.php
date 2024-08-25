@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Edition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
@@ -31,6 +32,15 @@ class HomeController extends Controller
         $stand_count = $edition->stands()->count();
 
         $can_enroll = Gate::allows('enroll', $edition);
+
+        // FIXME: This code is currently in the home page,
+        // where should the referral redirect to?
+        $referral_code = $request->input('ref');
+        if ($referral_code != null) {
+            // XXX: Cookie is stored forever, the limit is 400 days,
+            // browsers seem to cap it later
+            Cookie::queue(Cookie::forever('link_referral', $referral_code));
+        }
 
         return Inertia::render('Home', [
             'edition' => $edition,
