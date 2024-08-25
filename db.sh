@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./sail psql
+./sail up -d pgsql

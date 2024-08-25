@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\Participant;
+use App\Models\StudentAssociation;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +27,38 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+            'promoter' => ['nullable', 'string'],
         ])->validate();
+
+        $promoter = $input['promoter'] ?? null;
+
+        $promoter_code = null;
+
+        if (! is_null($promoter)) {
+
+            /*
+            $participant = Participant::firstWhere('code', $promoter);
+            if (!is_null($participant)) {
+                $participant->points = $participant->points + 10;
+                $promoter = $participant->code;
+            }
+            */
+
+            /*
+            $student_association = StudentAssociation::firstWhere('code', $promoter);
+            if (!is_null($student_association)) {
+                $student_association->points = $student_association->points + 20;
+
+                $promoter_code = $student_association->code;
+
+                // save
+                if (!is_null($promoter_code)) {
+                    // $participant->save();
+                    $student_association->save();
+                }
+            }
+            */
+        }
 
         $data = [
             'name' => $input['name'],
@@ -37,6 +69,7 @@ class CreateNewUser implements CreatesNewUsers
         ];
 
         $user = User::create($data);
+        // $participant = Participant::create(['user_id' => $user->id, 'code', $promoter_code]);
         $participant = Participant::create(['user_id' => $user->id]);
         $user->usertype()->associate($participant);
         $user->save();
