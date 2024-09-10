@@ -6,21 +6,19 @@ import Navbar from "@/Components/Navbar.vue";
 
 interface Props {
     title: string;
-    showNavbar?: boolean;
 }
 
-withDefaults(defineProps<Props>(), {
-    showNavbar: true,
-});
+defineProps<Props>();
+
 </script>
 
 <template>
-    <div>
+    <div class="min-h-screen flex flex-col">
         <Head :title="title" />
-        <div v-show="showNavbar" class="sticky left-0 right-0 top-0 z-30">
+        <div class="sticky left-0 right-0 top-0 z-30">
             <Navbar />
         </div>
-        <main class="min-h-screen">
+        <main class="flex flex-1">
             <slot />
         </main>
     </div>

@@ -3,14 +3,14 @@ import NavLink from "@/Components/NavLink.vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownTrigger from "@/Components/DropdownTrigger.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
-import HamburgerMenu from "@/Components/HamburgerMenu.vue";
+//import HamburgerMenu from "@/Components/HamburgerMenu.vue";
 import route, {
     type QueryParams,
     type RouteParamsWithQueryOverload,
 } from "ziggy-js";
-import { usePage } from "@inertiajs/vue3";
+//import { usePage } from "@inertiajs/vue3";
 //import { OhVueIcon } from "oh-vue-icons";
-import { isAdmin as checkIsAdmin } from "@/Types/User";
+//import { isAdmin as checkIsAdmin } from "@/Types/User";
 
 interface Route {
     label: string;
@@ -69,7 +69,7 @@ const pageRoutes: Routes = {
                 </template>
             </template>
         </Dropdown>
-        <NavLink :href="route('home')" class="md:hidden">
+        <NavLink :href="route('home')" class="ml-5 md:hidden">
             <img
                 class="w-24 max-md:w-24"
                 src="/images/logo-white.svg"

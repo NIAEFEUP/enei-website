@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
-import Navbar from "@/Components/Navbar.vue";
+
 </script>
 
 <template>
-    <AppLayout title="Home" :show-navbar="false">
-        <div class="min-h-screen flex flex-col">
+    <AppLayout title="Home">
             <div class="absolute inset-0 background z-2"></div>
             <div class="absolute inset-0 gradient-overlay z-0"></div>
-            <div class="sticky left-0 right-0 top-0 z-30">
-                <Navbar class="p-5" />
-            </div>
             <section
                 class="grow relative flex flex-col gap-8 px-5 py-36 md:justify-evenly md:py-0 md:px-0 z-10"
             >
@@ -37,7 +33,6 @@ import Navbar from "@/Components/Navbar.vue";
                     </p>
                 </div>
             </section>
-        </div>
     </AppLayout>
 </template>
 
