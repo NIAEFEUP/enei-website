@@ -5,34 +5,35 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 <template>
     <AppLayout title="Home">
-            <div class="absolute inset-0 background z-2"></div>
-            <div class="absolute inset-0 gradient-overlay z-0"></div>
-            <section
-                class="grow relative flex flex-col gap-8 px-5 py-36 md:justify-evenly md:py-0 md:px-0 z-10"
-            >
-                <div class="mx-auto md:ml-36 flex-grow md:flex-grow-0">
-                    <h1
-                        class="w-3/12 text-justify font-space-grotesk text-5xl font-bold tracking-tight text-white md:text-7xl"
-                    >
-                        <p class="whitespace-nowrap lowercase">Encontro</p>
-                        <p class="whitespace-nowrap lowercase">Nacional de</p>
-                        <p class="whitespace-nowrap lowercase">Estudantes de</p>
-                        <p class="whitespace-nowrap lowercase">Informática</p>
-                    </h1>
-                    <p
-                        class="font-space-grotesk text-2xl text-white md:text-4xl uppercase"
-                    >
-                        Porto 2025
-                    </p>
-                </div>
-                <div class="mx-auto">
-                    <p
-                        class="mr-2 w-48 bg-2023-bg p-2.5 px-8 text-center font-space-grotesk text-lg text-lg font-bold font-bold text-enei-blue uppercase"
-                    >
-                        Brevemente
-                    </p>
-                </div>
-            </section>
+        <div class="absolute inset-0 background z-2"></div>
+        <div class="absolute inset-0 gradient-overlay z-0"></div>
+
+        <section
+            class="grow relative flex flex-col gap-8 px-5 py-36 md:justify-evenly md:py-0 md:px-0 z-10"
+        >
+            <div class="mx-auto md:ml-36 flex-grow md:flex-grow-0">
+                <h1
+                    class="w-3/12 text-justify font-space-grotesk text-5xl font-bold tracking-tight text-white md:text-7xl"
+                >
+                    <p class="whitespace-nowrap lowercase">Encontro</p>
+                    <p class="whitespace-nowrap lowercase">Nacional de</p>
+                    <p class="whitespace-nowrap lowercase">Estudantes de</p>
+                    <p class="whitespace-nowrap lowercase">Informática</p>
+                </h1>
+                <p
+                    class="font-space-grotesk text-2xl text-white md:text-4xl uppercase"
+                >
+                    Porto 2025
+                </p>
+            </div>
+            <div class="mx-auto">
+                <p
+                    class="mr-2 w-48 bg-enei-beige p-2.5 px-8 text-center font-space-grotesk text-lg font-bold text-enei-blue uppercase"
+                >
+                    Brevemente
+                </p>
+            </div>
+        </section>
     </AppLayout>
 </template>
 
