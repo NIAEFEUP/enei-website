@@ -5,6 +5,6 @@
         "dockerfilePath": "./dockerfiles/Dockerfile.website"
     },
     "deploy": {
-        "sleepApplication": true
+        "sleepApplication": false
     }
 }
