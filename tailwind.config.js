@@ -19,14 +19,11 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                "space-grotesk": ["Space Grotesk", "sans-serif"],
             },
             colors: {
-                "2023-bg": "rgb(248, 245, 231)",
-                "2023-red": "rgb(217, 79, 4)",
-                "2023-red-dark": "rgb(177, 93, 93)",
-                "2023-teal": "rgb(0, 113, 114)",
-                "2023-teal-dark": "rgb(2, 82, 89)",
-                "2023-orange": "rgb(242, 147, 37)",
+                "enei-blue": "#0B4F6C",
+                "enei-beige": "#EFE3CA",
             },
             boxShadow: {
                 sm: "2px 2px 0 -1px var(--tw-shadow-color, currentColor), 2px 2px 0 0 black",
@@ -60,7 +57,7 @@ export default {
         forms,
         typography,
         containers,
-        plugin(function ({ matchUtilities, theme }) {
+        plugin(function({ matchUtilities, theme }) {
             matchUtilities(
                 {
                     shadow: (value) => {

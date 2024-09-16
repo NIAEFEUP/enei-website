@@ -31,7 +31,7 @@ services:
         build:
             context: .
             dockerfile: ./dockerfiles/Dockerfile.website
-            target: deploy
+            target: deploy-nocache
             args:
                 - LARAVEL_ENV=${APP_ENV:-local}
                 - LARAVEL_ENV_FILE=.env
