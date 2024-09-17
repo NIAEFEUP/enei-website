@@ -13,7 +13,7 @@ defineProps<Props>();
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col">
+    <div class="min-h-dvh flex flex-col">
         <Head :title="title" />
         <div class="sticky left-0 right-0 top-0 z-30">
             <Navbar />
