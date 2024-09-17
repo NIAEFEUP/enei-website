@@ -5,7 +5,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 <template>
 
-    <AppLayout title="Home" class="flex flex-col">
+    <AppLayout title="Home" class="flex">
 
         <div class="absolute inset-0 background z-2"></div>
         <div class="absolute inset-0 gradient-overlay z-0"></div>
