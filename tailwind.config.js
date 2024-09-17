@@ -17,6 +17,9 @@ export default {
 
     theme: {
         extend: {
+            minHeight: {
+                "dvh": ["100vh", "100dvh"],
+            },
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
                 "space-grotesk": ["Space Grotesk", "sans-serif"],
