@@ -41,7 +41,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 <style>
 .background {
-    background-image: url("/images/background.jpeg");
+    background-image: url("/images/landing_page.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
