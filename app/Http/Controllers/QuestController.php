@@ -50,4 +50,5 @@ class QuestController extends Controller
 
         return redirect()->back()->banner('Tarefa atribuída com sucesso!');
     }
+
 }
