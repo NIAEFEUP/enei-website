@@ -18,10 +18,8 @@ class QuestApiController extends Controller
     public function give(Request $request, Quest $quest): JsonResponse
     {
 
-        $editionId = $request->input('edition');
-        var_dump($request->get('quest_code'));
+        $editionId = $request->input('edition')->id;
         $participant = Participant::firstWhere('quest_code', $request->get('quest_code'));
-        var_dump($participant);
 
         if (!$participant) {
             return response()->json([
@@ -31,7 +29,6 @@ class QuestApiController extends Controller
         }
 
         $enrollment = $participant->enrollments()->where('edition_id', $editionId)->first();
-
         if ($enrollment === null) {
             return response()->json([
                 'status' => 'error',
@@ -39,34 +36,8 @@ class QuestApiController extends Controller
             ], 400);
         }
 
-        /** @var User|null */
-        $user = $request->user();
-
-        if ($user === null) {
-            Log::warning('Unauthenticated user attempted to give quest to participant');
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Please log in to perform this action.',
-            ], 401);
-        }
-
-        if ($user->cannot('give', [$quest, $enrollment])) {
-            Log::warning('Current user is not allowed to give quest "{quest}" to user {user}', [
-                'quest' => $quest->name,
-                'user' => $enrollment->participant->usertype->name,
-            ]);
-
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Not authorized to assign this quest to the participant!',
-            ], 403);
-        }
-
         $enrollment->quests()->attach($quest);
-        Log::info('Quest {quest} given to user {user}', [
-            'quest' => $quest->name,
-            'user' => $enrollment->participant->usertype->name,
-        ]);
+
 
         return response()->json([
             'status' => 'success',
