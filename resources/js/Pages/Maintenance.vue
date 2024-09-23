@@ -5,7 +5,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 <template>
 
-    <AppLayout title="Home" class="flex flex-col">
+    <AppLayout title="Home" class="flex">
 
         <div class="absolute inset-0 background z-2"></div>
         <div class="absolute inset-0 gradient-overlay z-0"></div>
@@ -41,7 +41,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 <style>
 .background {
-    background-image: url("/images/background.jpeg");
+    background-image: url("/images/landing_page.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

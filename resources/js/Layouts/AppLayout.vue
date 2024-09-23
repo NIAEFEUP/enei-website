@@ -18,7 +18,7 @@ defineProps<Props>();
         <div class="sticky left-0 right-0 top-0 z-30">
             <Navbar />
         </div>
-        <main class="flex-1">
+        <main :class="$attrs.class" class="flex-1">
             <slot />
         </main>
     </div>

@@ -38,7 +38,7 @@ class QuestApiController extends Controller
         }
         $participant = Participant::firstWhere('quest_code', $request->get('quest_code'));
 
-        if (!$participant) {
+        if ($participant=== null) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Participant not found!',
