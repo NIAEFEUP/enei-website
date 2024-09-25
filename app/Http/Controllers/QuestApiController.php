@@ -50,7 +50,7 @@ class QuestApiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Participant not enrolled in this edition!',
-            ], 400);
+            ], 412);
         }
 
         try {
