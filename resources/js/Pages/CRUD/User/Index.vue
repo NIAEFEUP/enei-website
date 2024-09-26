@@ -6,9 +6,12 @@ import HeaderRow from "@/Components/CRUD/HeaderRow.vue";
 import Row from "@/Components/CRUD/Row.vue";
 import Cell from "@/Components/CRUD/Cell.vue";
 import Header from "@/Components/CRUD/Header.vue";
+import route from "ziggy-js";
+import { Link } from "@inertiajs/vue3";
 
 interface Props {
     items: Paginated<User>;
+    isSearchable?: boolean;
 }
 
 defineProps<Props>();
@@ -22,7 +25,12 @@ const usertypeMap = {
 </script>
 
 <template>
-    <CRUDLayout title="User" :items="items" name="users">
+    <CRUDLayout
+        title="User"
+        :items="items"
+        name="users"
+        :is-searchable="isSearchable"
+    >
         <template #heading>Utilizadores</template>
 
         <template #header>
@@ -37,7 +45,11 @@ const usertypeMap = {
 
         <template #row="{ item }">
             <Row name="users" :item="item">
-                <Cell>{{ item.name }}</Cell>
+                <Cell
+                    ><Link :href="route('user.profile', item)">{{
+                        item.name
+                    }}</Link></Cell
+                >
                 <Cell>{{ item.email }}</Cell>
                 <Cell>{{ usertypeMap[item.usertype_type] }}</Cell>
             </Row>

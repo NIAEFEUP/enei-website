@@ -5,14 +5,23 @@ import ActionMessage from "@/Components/ActionMessage.vue";
 import FormSection from "@/Components/FormSection.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import type { User } from "@/Types/User";
+import {
+    type User,
+    isCompany as checkIsCompany,
+    isSpeaker as checkIsSpeaker,
+    isAdmin as checkIsAdmin,
+} from "@/Types/User";
 import route from "ziggy-js";
 
 interface Props {
     user: User | undefined;
 }
 
-const { user: user } = defineProps<Props>();
+const { user } = defineProps<Props>();
+
+const isCompany = checkIsCompany(user);
+const isSpeaker = checkIsSpeaker(user);
+const isAdmin = checkIsAdmin(user);
 
 const form = useForm({
     _method: "PUT",
@@ -23,49 +32,17 @@ const form = useForm({
         | "company"
         | "speaker"
         | "admin",
-    title:
-        user?.usertype_type === "App\\Models\\Speaker"
-            ? user?.usertype?.title ?? ""
-            : "",
+    title: isSpeaker ? user?.usertype?.title ?? "" : "",
     description:
-        user?.usertype_type === "App\\Models\\Company" ||
-        user?.usertype_type === "App\\Models\\Speaker"
-            ? user?.usertype?.description ?? ""
-            : "",
-    organization:
-        user?.usertype_type === "App\\Models\\Speaker"
-            ? user?.usertype?.organization ?? ""
-            : "",
-    social_media: {
-        email:
-            user?.usertype_type !== "App\\Models\\Admin"
-                ? user?.usertype?.social_media?.email ?? ""
-                : "",
-        facebook:
-            user?.usertype_type !== "App\\Models\\Admin"
-                ? user?.usertype?.social_media?.facebook ?? ""
-                : "",
-        github:
-            user?.usertype_type !== "App\\Models\\Admin"
-                ? user?.usertype?.social_media?.github ?? ""
-                : "",
-        instagram:
-            user?.usertype_type !== "App\\Models\\Admin"
-                ? user?.usertype?.social_media?.instagram ?? ""
-                : "",
-        linkedin:
-            user?.usertype_type !== "App\\Models\\Admin"
-                ? user?.usertype?.social_media?.linkedin ?? ""
-                : "",
-        twitter:
-            user?.usertype_type !== "App\\Models\\Admin"
-                ? user?.usertype?.social_media?.twitter ?? ""
-                : "",
-        website:
-            user?.usertype_type !== "App\\Models\\Admin"
-                ? user?.usertype?.social_media?.website ?? ""
-                : "",
-    },
+        isCompany || isSpeaker ? user?.usertype?.description ?? "" : "",
+    organization: isSpeaker ? user?.usertype?.organization ?? "" : "",
+    public_email: !isAdmin ? user?.usertype?.social_media?.email ?? "" : "",
+    facebook: !isAdmin ? user?.usertype?.social_media?.facebook ?? "" : "",
+    github: !isAdmin ? user?.usertype?.social_media?.github ?? "" : "",
+    instagram: !isAdmin ? user?.usertype?.social_media?.instagram ?? "" : "",
+    linkedin: !isAdmin ? user?.usertype?.social_media?.linkedin ?? "" : "",
+    twitter: !isAdmin ? user?.usertype?.social_media?.twitter ?? "" : "",
+    website: !isAdmin ? user?.usertype?.social_media?.website ?? "" : "",
 });
 
 const verificationLinkSent = ref(false);
@@ -84,10 +61,11 @@ const sendEmailVerification = () => {
 
 <template>
     <FormSection @submitted="updateProfileInformation">
-        <template #title> Profile Information </template>
+        <template #title> Informação do Perfil </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            Atualiza as informações do perfil da tua conta e o endereço de
+            e-mail.
         </template>
 
         <template #form>
@@ -97,7 +75,7 @@ const sendEmailVerification = () => {
                 <TextInput
                     id="name"
                     v-model="form.name"
-                    label="Name"
+                    label="Nome"
                     type="text"
                     autocomplete="name"
                     :error-message="form.errors.name"
@@ -118,7 +96,7 @@ const sendEmailVerification = () => {
                     "
                 >
                     <p class="mt-2 text-sm dark:text-white">
-                        Your email address is unverified.
+                        O teu endereço de e-mail não foi verificado.
 
                         <Link
                             :href="route('verification.send')"
@@ -127,7 +105,7 @@ const sendEmailVerification = () => {
                             class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                             @click.prevent="sendEmailVerification"
                         >
-                            Click here to re-send the verification email.
+                            Clica aqui para reenviar o e-mail de verificação.
                         </Link>
                     </p>
 
@@ -135,8 +113,8 @@ const sendEmailVerification = () => {
                         v-show="verificationLinkSent"
                         class="mt-2 text-sm font-medium text-green-600 dark:text-green-400"
                     >
-                        A new verification link has been sent to your email
-                        address.
+                        Um novo link de verificação foi enviado para o teu
+                        email.
                     </div>
                 </div>
 
@@ -167,78 +145,77 @@ const sendEmailVerification = () => {
                     :error-message="form.errors.organization"
                 />
 
-                <details
-                    v-if="form.type !== 'admin'"
-                    class="list-none self-stretch"
-                >
-                    <summary class="text-2023-teal-dark">Redes sociais</summary>
+                <template v-if="form.type !== 'admin'">
+                    <TextInput
+                        id="public_email"
+                        v-model="form.public_email"
+                        label="Email público"
+                        type="email"
+                        autocomplete="email"
+                        :error-message="form.errors.public_email"
+                    />
 
-                    <div class="mt-4 flex flex-col gap-4">
-                        <TextInput
-                            id="social_media.email"
-                            v-model="form.social_media.email"
-                            label="Email"
-                            type="email"
-                            autocomplete="email"
-                            :error-message="form.errors.social_media"
-                        />
+                    <TextInput
+                        id="facebook"
+                        v-model="form.facebook"
+                        label="Facebook"
+                        type="url"
+                        :error-message="form.errors.facebook"
+                    />
 
-                        <TextInput
-                            id="social_media.facebook"
-                            v-model="form.social_media.facebook"
-                            label="Facebook"
-                            type="text"
-                        />
+                    <TextInput
+                        id=".github"
+                        v-model="form.github"
+                        label="GitHub"
+                        type="url"
+                        :error-message="form.errors.github"
+                    />
 
-                        <TextInput
-                            id="social_media.github"
-                            v-model="form.social_media.github"
-                            label="GitHub"
-                            type="text"
-                        />
+                    <TextInput
+                        id="instagram"
+                        v-model="form.instagram"
+                        label="Instagram"
+                        type="url"
+                        :error-message="form.errors.instagram"
+                    />
 
-                        <TextInput
-                            id="social_media.instagram"
-                            v-model="form.social_media.instagram"
-                            label="Instagram"
-                            type="text"
-                        />
+                    <TextInput
+                        id="linkedin"
+                        v-model="form.linkedin"
+                        label="Linkedin"
+                        type="url"
+                        :error-message="form.errors.linkedin"
+                    />
 
-                        <TextInput
-                            id="social_media.linkedin"
-                            v-model="form.social_media.linkedin"
-                            label="Linkedin"
-                            type="text"
-                        />
+                    <TextInput
+                        id="twitter"
+                        v-model="form.twitter"
+                        label="Twitter"
+                        type="url"
+                        :error-message="form.errors.twitter"
+                    />
 
-                        <TextInput
-                            id="social_media.twitter"
-                            v-model="form.social_media.twitter"
-                            label="Twitter"
-                            type="text"
-                        />
-
-                        <TextInput
-                            id="social_media.website"
-                            v-model="form.social_media.website"
-                            label="Website"
-                            type="url"
-                        />
-                    </div>
-                </details>
+                    <TextInput
+                        id="website"
+                        v-model="form.website"
+                        label="Website"
+                        type="url"
+                        :error-message="form.errors.website"
+                    />
+                </template>
             </div>
         </template>
 
         <template #actions>
             <ActionMessage :on="form.recentlySuccessful" class="mr-3">
-                Saved.
+                Guardado.
             </ActionMessage>
 
             <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
             >
-                Save
+                Guardar
             </PrimaryButton>
         </template>
     </FormSection>

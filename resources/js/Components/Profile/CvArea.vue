@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { User } from "@/Types/User";
-import { useForm } from "@inertiajs/vue3";
+import { type User, isCompany, isParticipant } from "@/Types/User";
+import { useForm, usePage } from "@inertiajs/vue3";
 import { OhVueIcon } from "oh-vue-icons";
 import { ref } from "vue";
 import route from "ziggy-js";
@@ -11,7 +11,9 @@ interface Props {
 
 const props = defineProps<Props>();
 
-let previewOpen = ref(false);
+const page = usePage();
+
+let previewOpen = ref(isCompany(page.props.auth.user) ?? false);
 
 const form = useForm({
     _method: "PUT",
@@ -49,9 +51,9 @@ const clearCVFileInput = () => {
 </script>
 
 <template>
-    <div class="flex-col">
+    <div class="flex w-full flex-col py-12 md:px-32">
         <div
-            class="mt-12 flex justify-between border-solid border-black bg-2023-teal-dark p-3 px-8 font-bold text-2023-bg md:mx-32"
+            class="flex justify-between border-solid border-black bg-2023-teal-dark p-3 px-8 font-bold text-2023-bg"
             :class="[previewOpen ? 'border-x border-t' : 'border']"
         >
             <div class="flex items-center">
@@ -105,14 +107,11 @@ const clearCVFileInput = () => {
             </button>
         </div>
         <div
-            class="mx-36 h-fit items-center justify-center border-x border-b border-solid border-black bg-2023-red-dark p-6 font-bold text-2023-bg max-md:mx-2"
+            class="mx-4 h-fit items-center justify-center border-x border-b border-solid border-black bg-2023-red-dark p-6 font-bold text-2023-bg max-md:mx-2"
             :class="[previewOpen ? 'flex' : 'hidden']"
         >
             <object
-                v-if="
-                    item?.usertype_type === 'App\\Models\\Participant' &&
-                    item.usertype?.cv_path
-                "
+                v-if="isParticipant(item) && item.usertype?.cv_path"
                 :data="item.usertype?.cv_url + '#toolbar&view=FitH'"
                 width="100%"
                 type="application/pdf"
@@ -120,10 +119,7 @@ const clearCVFileInput = () => {
                 class="max-md:hidden"
             ></object>
             <a
-                v-if="
-                    item?.usertype_type === 'App\\Models\\Participant' &&
-                    item.usertype?.cv_path
-                "
+                v-if="isParticipant(item) && item.usertype?.cv_path"
                 class="md:hidden"
                 target="_blank"
                 :href="item.usertype?.cv_url"
@@ -133,22 +129,17 @@ const clearCVFileInput = () => {
                     <OhVueIcon name="io-open" scale="1.3"></OhVueIcon>
                 </div>
             </a>
-            <p
-                v-if="
-                    item?.usertype_type === 'App\\Models\\Participant' &&
-                    !item.usertype?.cv_path
-                "
-            >
+            <p v-if="isParticipant(item) && !item.usertype?.cv_path">
                 Nenhum CV disponível
             </p>
         </div>
         <div
             v-if="
-                item?.usertype_type === 'App\\Models\\Participant' &&
+                isParticipant(item) &&
                 !item?.usertype?.cv_path &&
                 $page.props.auth.user?.id == item.id
             "
-            class="mb-12 mt-3 border-2 border-solid border-black p-3 text-2023-red md:mx-32"
+            class="mt-3 border-2 border-solid border-black p-3 text-2023-red"
         >
             <p>
                 <span class="font-bold">Porque é que o deves fazer? </span>

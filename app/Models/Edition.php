@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Laravel\Scout\Searchable;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Edition extends Model
 {
     use HasFactory;
     use HasRelationships;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -35,7 +37,8 @@ class Edition extends Model
 
     public function events(): HasManyThrough
     {
-        return $this->through('event_days')->has('events');
+        return $this->through('event_days')->has('events')
+            ->orderBy('event_days.date')->orderBy('time_start');
     }
 
     public function workshops(): HasManyThrough
@@ -50,7 +53,7 @@ class Edition extends Model
 
     public function products(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class)->orderBy('name');
     }
 
     public function quests(): HasMany
@@ -60,7 +63,9 @@ class Edition extends Model
 
     public function slots(): HasManyThrough
     {
-        return $this->hasManyDeep(Slot::class, [Quest::class, 'quest_slot'])->distinct();
+        return $this->hasManyDeep(Slot::class, [Quest::class, 'quest_slot'])
+            ->orderBy('name')
+            ->distinct();
     }
 
     public function speakers(): HasManyThrough
@@ -87,8 +92,21 @@ class Edition extends Model
             ->orderBy('name');
     }
 
+    public function sponsor_tiers(): HasMany
+    {
+        return $this->hasMany(SponsorTier::class)->orderByDesc('rank');
+    }
+
     public function competitions(): HasMany
     {
-        return $this->hasMany(Competition::class);
+        return $this->hasMany(Competition::class)->orderBy('name');
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'year' => $this->year,
+        ];
     }
 }

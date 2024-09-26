@@ -3,6 +3,13 @@
 namespace App\Models;
 
 use App\Traits\HasCV;
+use BaconQrCode\Renderer\Color\Rgb;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\Fill;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +40,7 @@ class Participant extends Model
      */
     protected $appends = [
         'cv_url',
+        'quest_qr_code',
     ];
 
     public function enrollments(): HasMany
@@ -57,6 +65,31 @@ class Participant extends Model
 
     public function competitionTeams(): BelongsToMany
     {
-        return $this->belongsToMany(CompetitionTeam::class);
+        return $this->belongsToMany(CompetitionTeam::class)->using(CompetitionTeamParticipant::class);
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'social_media' => $this->socialMedia?->toSearchableArray(),
+        ];
+    }
+
+    public function questQrCode(): Attribute
+    {
+        return Attribute::get(function () {
+            if (! $this->quest_code) {
+                return null;
+            }
+
+            $svg = (new Writer(
+                new ImageRenderer(
+                    new RendererStyle(192, 0, null, null, Fill::uniformColor(new Rgb(248, 245, 231), new Rgb(0, 113, 114))),
+                    new SvgImageBackEnd
+                )
+            ))->writeString($this->quest_code);
+
+            return trim(substr($svg, strpos($svg, "\n") + 1));
+        });
     }
 }

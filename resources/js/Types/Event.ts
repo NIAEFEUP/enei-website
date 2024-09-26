@@ -10,8 +10,12 @@ export default interface Event extends Model {
     time_end: string;
     topic: string;
     capacity?: number;
-    description: string;
-    room?: string;
+
+    description?: string;
+    description_html: string;
+
+    location?: string;
+    external_url?: string;
 
     enrollments?: Enrollment[];
 

@@ -4,9 +4,11 @@ import Ticket from "./Ticket.vue";
 
 type EventTicket = Event & {
     joined: boolean;
+    used: boolean;
 };
 
 const getTicketState = (t: EventTicket): "used" | "acquired" | "available" => {
+    if (t.used) return "used";
     if (t.joined) return "acquired";
     return "available";
 };
@@ -31,17 +33,22 @@ const getTicketState = (t: EventTicket): "used" | "acquired" | "available" => {
             />
         </clipPath>
     </svg>
-
+    <p
+        v-if="($page.props.tickets as EventTicket[]).length === 0"
+        class="flex w-full flex-auto items-center justify-center pt-8 text-center text-2xl font-bold text-2023-teal-dark"
+    >
+        Ainda não há eventos marcados. Verifica mais tarde!
+    </p>
     <div
-        class="grid items-center justify-center gap-10 self-center pt-8"
+        v-else
+        class="grid w-full items-center justify-center gap-10 self-center pt-8"
         style="grid-template-columns: repeat(auto-fill, 350px)"
     >
-        <div
+        <Ticket
             v-for="item in $page.props.tickets as EventTicket[]"
             :key="item.id"
-            class="max-w-sm"
-        >
-            <Ticket :state="getTicketState(item)" :event="item"></Ticket>
-        </div>
+            :state="getTicketState(item)"
+            :event="item"
+        ></Ticket>
     </div>
 </template>

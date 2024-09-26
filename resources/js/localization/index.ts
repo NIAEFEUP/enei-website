@@ -28,6 +28,7 @@ const messages = {
             },
             maintenance: {
                 title: "Coming soon...",
+                soon: "Coming soon",
                 date: "25th - 31th october",
                 prepareEdition: "We are preparing another year of SINF",
                 contactUs: "Contact us",
@@ -152,6 +153,7 @@ const messages = {
             },
             maintenance: {
                 title: "Brevemente...",
+                soon: "Brevemente",
                 date: "25 a 31 de outubro",
                 prepareEdition: "Estamos a preparar mais uma edição da SINF!",
                 contactUs: "Contacta-nos!",

@@ -1,6 +1,7 @@
 import type Model from "@/Types/Model";
 import type Stand from "@/Types/Stand";
 import type Event from "@/Types/Event";
+import type Competition from "./Competition";
 
 export default interface EventDay extends Model {
     date: Date;
@@ -11,5 +12,6 @@ export default interface EventDay extends Model {
 
     events?: Event[];
     talks?: Event[];
-    workshops?: Event[];
+    activities?: Event[];
+    competitions?: Competition[];
 }

@@ -9,13 +9,16 @@ import Header from "@/Components/CRUD/Header.vue";
 import type Edition from "@/Types/Edition";
 import type Company from "@/Types/Company";
 import { computed } from "vue";
+import type SponsorTier from "@/Types/SponsorTier";
 
 interface Props {
     items: Paginated<Sponsor>;
     with: {
         editions: Edition[];
         companies: Company[];
+        tiers: SponsorTier[];
     };
+    isSearchable?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -35,15 +38,23 @@ const companies = computed<Record<number, string>>(() =>
     ),
 );
 
-const tiers = {
-    PLATINUM: "Platina",
-    GOLD: "Ouro",
-    SILVER: "Prata",
-};
+const tiers = computed<Record<number, string>>(() =>
+    Object.fromEntries(
+        props.with.tiers.map((tier) => [
+            tier.id,
+            `${editions.value[tier.edition_id]} - ${tier.name}`,
+        ]),
+    ),
+);
 </script>
 
 <template>
-    <CRUDLayout title="Sponsor" :items="items" name="sponsors">
+    <CRUDLayout
+        title="Sponsor"
+        :items="items"
+        name="sponsors"
+        :is-searchable="isSearchable"
+    >
         <template #heading>Patrocínios</template>
 
         <template #header>
@@ -64,7 +75,7 @@ const tiers = {
             <Row name="sponsors" :item="item">
                 <Cell>{{ editions[item.edition_id] }}</Cell>
                 <Cell>{{ companies[item.company_id] }}</Cell>
-                <Cell>{{ tiers[item.tier] }}</Cell>
+                <Cell>{{ tiers[item.sponsor_tier_id] }}</Cell>
             </Row>
         </template>
     </CRUDLayout>

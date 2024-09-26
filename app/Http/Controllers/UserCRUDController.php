@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Company;
 use App\Models\Participant;
-use App\Models\SocialMedia;
 use App\Models\Speaker;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -21,19 +20,18 @@ class UserCRUDController extends CRUDController
         'email' => 'required|string|email|max:255|unique:users,email',
         'type' => 'required|in:participant,company,admin,speaker',
         'title' => 'sometimes|nullable|string',
+        'display_name' => 'sometimes|nullable|string',
         'description' => 'sometimes|nullable|string',
         'organization' => 'sometimes|nullable|string',
-        'social_media.email' => 'sometimes|nullable|string|email',
-        'social_media.facebook' => 'sometimes|nullable|string|url:https|regex:/^https:\/\/facebook.com\/\w+$/',
-        'social_media.github' => 'sometimes|nullable|string|url:https|regex:/^https:\/\/github.com\/\w+$/',
-        'social_media.instagram' => 'sometimes|nullable|string|url:https|regex:/^https:\/\/instagram.com\/\w+$/',
-        'social_media.linkedin' => ['sometimes', 'nullable', 'string', 'url:https', 'regex:/^https:\/\/linkedin.com\/(in|company)/\w+$/'],
-        'social_media.twitter' => 'sometimes|nullable|string|url:https|regex:/^https:\/\/twitter.com\/\w+$/',
-        'social_media.website' => 'sometimes|nullable|string|url:https',
-        'photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
+        'public_email' => 'sometimes|nullable|string|email',
+        'facebook' => 'sometimes|nullable|string|url:https|regex:/^https:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9.]{5,}\/?$/',
+        'github' => ['sometimes', 'nullable', 'string', 'url:https', 'regex:/^https:\/\/(www\.)?github\.com\/[a-zA-Z\d](?:[a-zA-Z\d]|-(?=[a-zA-Z\d])){1,38}\/?$/'],
+        'instagram' => 'sometimes|nullable|string|url:https|regex:/^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]{1,30}\/?$/',
+        'linkedin' => ['sometimes', 'nullable', 'string', 'url:https', 'regex:/^https:\/\/(www\.)?linkedin\.com\/(in|company)\/[\p{L}0-9-]{3,100}\/?$/u'],
+        'twitter' => ['sometimes', 'nullable', 'string', 'url:https', 'regex:/^https:\/\/(www\.)?(twitter|x)\.com\/[a-zA-Z0-9_]{4,15}\/?$/'],
+        'website' => 'sometimes|nullable|string|url:https',
+        'photo' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
     ];
-
-    protected array $search = ['name', 'email'];
 
     protected function updateRules($old): array
     {
@@ -67,6 +65,7 @@ class UserCRUDController extends CRUDController
                 'title' => $new['title'],
                 'description' => $new['description'],
                 'organization' => $new['organization'],
+                'display_name' => $new['display_name'],
             ],
             default => [],
         });
@@ -74,10 +73,19 @@ class UserCRUDController extends CRUDController
         $user->usertype()->associate($usertype);
         $user->save();
 
-        if ($new['type'] !== 'admin' && isset($new['social_media'])) {
-            $socialMedia = SocialMedia::create($new['social_media']);
-            $usertype->socialMedia()->associate($socialMedia);
-            $usertype->save();
+        if ($new['type'] !== 'admin') {
+            $user->usertype->socialMedia()->associate(
+                $user->usertype->socialMedia()->updateOrCreate([], [
+                    'email' => $new['public_email'],
+                    'facebook' => $new['facebook'],
+                    'github' => $new['github'],
+                    'instagram' => $new['instagram'],
+                    'linkedin' => $new['linkedin'],
+                    'twitter' => $new['twitter'],
+                    'website' => $new['website'],
+                ])
+            );
+            $user->usertype->save();
         }
         DB::commit();
 
@@ -110,20 +118,25 @@ class UserCRUDController extends CRUDController
                 'title' => $new['title'],
                 'description' => $new['description'],
                 'organization' => $new['organization'],
+                'display_name' => $new['display_name'],
             ],
             default => [],
         };
         $old->usertype->update($usertypeProps);
 
-        if ($new['type'] !== 'admin' && isset($new['social_media'])) {
-            $socialMedia = $old->usertype->social_media;
-            if ($socialMedia === null) {
-                $socialMedia = SocialMedia::create($new['social_media']);
-                $old->usertype->socialMedia()->associate($socialMedia);
-                $old->usertype->save();
-            } else {
-                $socialMedia->update($new['social_media']);
-            }
+        if ($new['type'] !== 'admin') {
+            $old->usertype->socialMedia()->associate(
+                $old->usertype->socialMedia()->updateOrCreate([], [
+                    'email' => $new['public_email'],
+                    'facebook' => $new['facebook'],
+                    'github' => $new['github'],
+                    'instagram' => $new['instagram'],
+                    'linkedin' => $new['linkedin'],
+                    'twitter' => $new['twitter'],
+                    'website' => $new['website'],
+                ])
+            );
+            $old->usertype->save();
         }
 
         if (isset($new['photo'])) {

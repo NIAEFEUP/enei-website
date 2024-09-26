@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Company;
 use App\Models\Edition;
+use App\Models\SponsorTier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class SponsorFactory extends Factory
     public function definition(): array
     {
         return [
-            'tier' => fake()->randomElement(['PLATINUM', 'GOLD', 'SILVER']),
+            'sponsor_tier_id' => SponsorTier::factory(),
             'edition_id' => Edition::factory(),
             'company_id' => Company::factory(),
         ];

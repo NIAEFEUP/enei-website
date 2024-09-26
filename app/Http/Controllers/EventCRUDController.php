@@ -20,8 +20,9 @@ class EventCRUDController extends CRUDController
         'name' => 'required|string',
         'time_start' => 'required|date_format:"H:i:s"',
         'time_end' => 'required|date_format:"H:i:s"|after:time_start',
-        'description' => 'required|string',
-        'room' => 'sometimes|nullable|string',
+        'description' => 'sometimes|nullable|string',
+        'location' => 'sometimes|nullable|string',
+        'external_url' => 'sometimes|nullable|string',
         'topic' => 'required|string',
         'capacity' => 'nullable|numeric|integer',
         'event_day_id' => 'required|exists:event_days,id',
@@ -29,14 +30,13 @@ class EventCRUDController extends CRUDController
         'users' => 'sometimes|nullable|array|exists:users,id',
     ];
 
-    protected array $search = ['name', 'topic', 'capacity', 'room'];
-
     protected function created(array $new): ?array
     {
         $users = $new['users'];
         unset($new['users']);
 
         DB::beginTransaction();
+        /** @var Event $event */
         $event = Event::create($new);
 
         $event->users()->sync($users);
@@ -50,10 +50,13 @@ class EventCRUDController extends CRUDController
         $users = $new['users'];
         unset($new['users']);
 
+        /** @var Event $old */
         $old->users()->sync($users);
 
         return $new;
     }
+
+    protected $load = ['users'];
 
     protected function with(): array
     {

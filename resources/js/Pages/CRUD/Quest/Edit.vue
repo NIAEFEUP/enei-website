@@ -7,6 +7,7 @@ import type Event from "@/Types/Event";
 import type Quest from "@/Types/Quest";
 import type Stand from "@/Types/Stand";
 import { useForm } from "@inertiajs/vue3";
+import { computed } from "vue";
 import route from "ziggy-js";
 
 interface Props {
@@ -18,15 +19,28 @@ interface Props {
     };
 }
 
-const { item: quest } = defineProps<Props>();
+const props = defineProps<Props>();
+
+const { item: quest } = props;
+
+const stands = computed<Record<number, string>>(() =>
+    Object.fromEntries(
+        props.with.stands.map((stand) => [
+            stand.id,
+            `${stand.sponsor?.company?.user?.name} - Dia ${new Date(
+                stand.event_day?.date ?? Date(),
+            ).getDate()}`,
+        ]),
+    ),
+);
 
 const form = useForm({
     name: quest.name,
     category: quest.category.toLowerCase(),
     requirement:
-        (quest.requirement_type.split("\\").pop() ?? "").toLowerCase() +
+        (quest.requirement_type?.split("\\").pop() ?? "").toLowerCase() +
         ";" +
-        quest.requirement_id.toString(),
+        quest.requirement_id?.toString(),
     edition_id: quest.edition_id.toString(),
 });
 
@@ -76,7 +90,7 @@ const submit = () => {
                         :key="'stand;' + stand.id"
                         :value="'stand;' + stand.id"
                     >
-                        {{ stand.sponsor?.company?.user?.name ?? stand.id }}
+                        {{ stands[stand.id] }}
                     </option>
                 </optgroup>
                 <optgroup label="Eventos">
@@ -87,6 +101,9 @@ const submit = () => {
                     >
                         {{ event.name }}
                     </option>
+                </optgroup>
+                <optgroup label="Geral">
+                    <option key="general;0" value="general;0">Geral</option>
                 </optgroup>
             </TextInput>
 

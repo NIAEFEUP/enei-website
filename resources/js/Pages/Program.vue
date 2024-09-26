@@ -6,18 +6,18 @@ import route from "ziggy-js";
 import { Link } from "@inertiajs/vue3";
 
 interface Props {
-    eventDay: EventDay;
+    eventDay?: EventDay;
     queryDay: number;
     totalDays: number;
 }
 
-const { eventDay, queryDay, totalDays } = defineProps<Props>();
+defineProps<Props>();
 </script>
 
 <template>
     <AppLayout :title="$t('pages.program.title')">
         <div
-            v-if="totalDays !== 0"
+            v-if="totalDays !== 0 && eventDay !== undefined"
             class="flex flex-col items-center px-10 py-10 md:px-40"
         >
             <h1

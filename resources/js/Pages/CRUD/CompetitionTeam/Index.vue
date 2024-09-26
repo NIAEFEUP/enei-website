@@ -14,6 +14,7 @@ interface Props {
     with: {
         competitions: Competition[];
     };
+    isSearchable?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -33,6 +34,7 @@ const editions = computed<Record<number, string>>(() =>
         title="Competition Teams"
         :items="items"
         name="competitionTeams"
+        :is-searchable="isSearchable"
     >
         <template #heading>Equipas na Competição de Programação</template>
 
@@ -46,10 +48,11 @@ const editions = computed<Record<number, string>>(() =>
         </template>
 
         <template #row="{ item }">
+            ,
             <Row name="competitionTeams" :item="item">
                 <Cell>{{ editions[item.competition_id] }}</Cell>
                 <Cell>{{ item.name }}</Cell>
-                <Cell>{{ item.participants?.length ?? "N/A" }}</Cell>
+                <Cell>{{ item.members?.length ?? "N/A" }}</Cell>
                 <Cell>{{ item.points }}</Cell>
             </Row>
         </template>

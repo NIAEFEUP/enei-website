@@ -25,11 +25,12 @@ const form = useForm({
     time_start: event.time_start.substring(0, 16),
     time_end: event.time_end.substring(0, 16),
     topic: event.topic,
-    description: event.description,
+    description: event.description ?? "",
     capacity: event.capacity?.toString() ?? "",
     event_day_id: event.event_day_id.toString(),
     event_type_id: event.event_type_id.toString(),
-    room: event.room ?? "",
+    location: event.location ?? "",
+    external_url: event.external_url ?? "",
     users: event.users?.map((u) => u.id.toString()) ?? [],
 });
 
@@ -82,11 +83,19 @@ const submit = () => {
             />
 
             <TextInput
-                id="room"
-                v-model="form.room"
-                label="Sala"
+                id="location"
+                v-model="form.location"
+                label="Local"
                 type="text"
-                :error-message="form.errors.room"
+                :error-message="form.errors.location"
+            />
+
+            <TextInput
+                id="external_url"
+                v-model="form.external_url"
+                label="URL Externo"
+                type="url"
+                :error-message="form.errors.external_url"
             />
 
             <TextInput
@@ -94,8 +103,6 @@ const submit = () => {
                 v-model="form.description"
                 label="Descrição"
                 type="textarea"
-                step="60"
-                required
                 :error-message="form.errors.description"
             />
 

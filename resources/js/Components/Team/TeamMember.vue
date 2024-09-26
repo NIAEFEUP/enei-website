@@ -33,26 +33,23 @@ const bgColor: Record<string, string> = {
     teal: "bg-2023-teal",
 };
 
-const { color, staff } = defineProps<{
+const props = defineProps<{
     color: string;
     staff: Staff;
 }>();
 
+const staff = computed(() => props.staff);
+const color = computed(() => props.color);
+
 const socialMedia = computed(() => {
     return Object.fromEntries(
-        Object.entries(staff.participant?.social_media ?? {}).filter(
+        Object.entries(staff.value.participant?.social_media ?? {}).filter(
             ([key, value]) =>
                 ["github", "linkedin", "website"].includes(key) &&
                 value != null,
         ),
     ) as Record<"github" | "linkedin" | "website", string>;
 });
-
-const urlPrefixes = {
-    github: "https://github.com/",
-    linkedin: "https://linkedin.com/in/",
-    website: "",
-};
 </script>
 
 <template>
@@ -73,7 +70,7 @@ const urlPrefixes = {
             <a
                 v-for="(social, key, idx) in socialMedia"
                 :key="idx"
-                :href="urlPrefixes[key] + social"
+                :href="social"
                 target="_blank"
             >
                 <OhVueIcon

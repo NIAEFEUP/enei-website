@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Throwable;
 
@@ -25,6 +26,9 @@ class Handler extends ExceptionHandler
                 ->toResponse($request)
                 ->setStatusCode($response->status());
         } elseif ($response->status() === 503) {
+
+            Log::info('Rendering "Coming soon..." page');
+
             return Inertia::render('Maintenance')
                 ->toResponse($request)
                 ->setStatusCode($response->status());

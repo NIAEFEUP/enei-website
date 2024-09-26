@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type Event from "@/Types/Event";
-import type { SpeakerUser } from "@/Types/User";
+import { isSpeaker } from "@/Types/User";
 import { Link } from "@inertiajs/vue3";
 import { computed } from "vue";
 import route from "ziggy-js";
@@ -9,19 +9,14 @@ interface Props {
     event: Event;
 }
 
-const { event } = defineProps<Props>();
+const props = defineProps<Props>();
 
-const speakers = computed(
-    () =>
-        event.users
-            ?.filter((user) => user.usertype_type === "App\\Models\\Speaker")
-            .map((user) => user as SpeakerUser),
-);
+const event = computed(() => props.event);
+
+const speakers = computed(() => event.value.users?.filter(isSpeaker));
 
 const formatTimeString = (time: string): string => {
-    const [hours, minutes] = time.split(":");
-
-    return `${hours}h${minutes}`;
+    return `1970-01-01T${time}.000000Z`;
 };
 </script>
 
@@ -52,9 +47,13 @@ const formatTimeString = (time: string): string => {
                 >
             </li>
         </ul>
+        <span v-if="event.location" class="text-2023-teal"
+            >Local: <span class="font-bold">{{ event.location }}</span></span
+        >
         <span class="text-2023-teal">
-            {{ formatTimeString(event.time_start) }} -
-            {{ formatTimeString(event.time_end) }}
+            {{ $d(new Date(formatTimeString(event.time_start)), "hourMinute") }}
+            -
+            {{ $d(new Date(formatTimeString(event.time_end)), "hourMinute") }}
         </span>
         <span
             class="absolute -left-[calc(2rem+17.75px)] top-0 inline-flex h-8 w-8 items-center justify-center rounded-sm bg-2023-orange text-xl font-semibold text-white"

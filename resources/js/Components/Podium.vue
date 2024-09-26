@@ -1,10 +1,44 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type CompetitionTeam from "@/Types/CompetitionTeam";
+import { type CompetitionPrizes } from "@/Types/Competition";
+import { computed } from "vue";
+
+interface Props {
+    prizes: CompetitionPrizes;
+    leaderboard: CompetitionTeam[];
+}
+
+const props = defineProps<Props>();
+
+// const leaderboard = computed(() => props.leaderboard);
+// const prizes = computed(() => props.prizes);
+
+const images = computed(() => {
+    // we need to have all 3 teams in order to display stuff
+    if (props.leaderboard.length < 3)
+        return [
+            props.prizes.firstPlace,
+            props.prizes.secondPlace,
+            props.prizes.thirdPlace,
+        ];
+    return props.leaderboard.map((team) =>
+        team.image_competition_team_url
+            ? team.image_competition_team_url
+            : `https://ui-avatars.com/api/?size=512&name=${team.name
+                  .split(" ")
+                  .map((t) => t[0])
+                  .join("+")}&color=f8f5e7&background=d94f04`,
+    );
+});
+
+const hasLeaderboardTeams = computed(() => props.leaderboard.length >= 3);
+</script>
 
 <template>
-    <section class="relative flex justify-center py-28">
+    <section class="relative flex flex-col items-center justify-center py-28">
         <svg
-            width="60%"
-            height="60%"
+            width="75%"
+            height="75%"
             viewBox="0 0 1220 582"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -45,6 +79,7 @@
                 d="M641.47 489.897V511H578.161V489.897H598.971V452.527C598.091 453.7 596.724 454.872 594.867 456.044C593.011 457.217 590.911 458.34 588.566 459.415C586.319 460.49 584.023 461.369 581.678 462.053C579.333 462.639 577.184 462.932 575.23 462.932V441.243C576.891 441.243 578.942 440.754 581.385 439.777C583.827 438.703 586.27 437.384 588.712 435.821C591.253 434.257 593.451 432.694 595.307 431.131C597.261 429.568 598.482 428.298 598.971 427.321H622.858V489.897H641.47Z"
                 fill="#F8F5E7"
             />
+
             <clipPath id="first">
                 <rect
                     x="471.5"
@@ -61,9 +96,8 @@
                 height="271"
                 x="471.5"
                 y="3.5"
-                href="/images/default_icon.png"
+                :href="images[0]"
                 clip-path="url(#first)"
-                class="bg-opacity-0 duration-75 ease-out hover:blur-sm"
             />
             <clipPath id="second">
                 <rect
@@ -81,9 +115,8 @@
                 height="271"
                 x="69.5"
                 y="76.5"
-                href="/images/default_icon.png"
+                :href="images[1]"
                 clip-path="url(#second)"
-                class="bg-opacity-0 duration-75 ease-out hover:blur-sm"
             />
 
             <clipPath id="third">
@@ -102,65 +135,10 @@
                 height="271"
                 x="873.5"
                 y="98.5"
-                href="/images/default_icon.png"
+                :href="images[2]"
                 clip-path="url(#third)"
-                class="bg-opacity-0 duration-75 ease-out hover:blur-sm"
             />
 
-            <path
-                d="M463.715 161.572C466.319 158.495 470.925 158.111 474.002 160.715L608.905 274.867C611.982 277.472 612.366 282.077 609.762 285.155C607.158 288.232 602.552 288.616 599.475 286.012L464.572 171.859C461.495 169.255 461.111 164.649 463.715 161.572Z"
-                fill="#D52121"
-            />
-            <path
-                d="M749.762 161.572C747.158 158.495 742.552 158.111 739.475 160.715L604.572 274.867C601.495 277.472 601.111 282.077 603.715 285.155C606.319 288.232 610.925 288.616 614.002 286.012L748.905 171.859C751.982 169.255 752.366 164.649 749.762 161.572Z"
-                fill="#D52121"
-            />
-            <g filter="url(#filter3_i_541_2)">
-                <circle cx="607" cy="289" r="22" fill="#F2BC30" />
-            </g>
-            <circle
-                cx="607"
-                cy="289"
-                r="23.5"
-                stroke="#F2BC30"
-                stroke-width="3"
-            />
-            <path
-                d="M61.7149 232.572C64.319 229.495 68.9246 229.111 72.002 231.715L206.905 345.867C209.982 348.472 210.366 353.077 207.762 356.155C205.158 359.232 200.552 359.616 197.475 357.012L62.572 242.859C59.4946 240.255 59.1109 235.649 61.7149 232.572Z"
-                fill="#1E78FF"
-            />
-            <path
-                d="M347.762 232.572C345.158 229.495 340.552 229.111 337.475 231.715L202.572 345.867C199.495 348.472 199.111 353.077 201.715 356.155C204.319 359.232 208.925 359.616 212.002 357.012L346.905 242.859C349.982 240.255 350.366 235.649 347.762 232.572Z"
-                fill="#1E78FF"
-            />
-            <g filter="url(#filter4_i_541_2)">
-                <circle cx="205" cy="360" r="22" fill="#C3C3C3" />
-            </g>
-            <circle
-                cx="205"
-                cy="360"
-                r="23.5"
-                stroke="#C3C3C3"
-                stroke-width="3"
-            />
-            <path
-                d="M865.715 256.572C868.319 253.495 872.925 253.111 876.002 255.715L1010.9 369.867C1013.98 372.472 1014.37 377.077 1011.76 380.155C1009.16 383.232 1004.55 383.616 1001.47 381.012L866.572 266.859C863.495 264.255 863.111 259.649 865.715 256.572Z"
-                fill="#16C150"
-            />
-            <path
-                d="M1151.76 256.572C1149.16 253.495 1144.55 253.111 1141.47 255.715L1006.57 369.867C1003.49 372.472 1003.11 377.077 1005.71 380.155C1008.32 383.232 1012.92 383.616 1016 381.012L1150.9 266.859C1153.98 264.255 1154.37 259.649 1151.76 256.572Z"
-                fill="#16C150"
-            />
-            <g filter="url(#filter5_i_541_2)">
-                <circle cx="1009" cy="384" r="22" fill="#D48145" />
-            </g>
-            <circle
-                cx="1009"
-                cy="384"
-                r="23.5"
-                stroke="#D48145"
-                stroke-width="3"
-            />
             <defs>
                 <filter
                     id="filter0_i_541_2"
@@ -416,5 +394,35 @@
                 </filter>
             </defs>
         </svg>
+
+        <div
+            v-if="hasLeaderboardTeams"
+            class="mt-10 hidden w-3/4 grid-cols-3 items-center gap-4 px-1.5 text-center align-middle text-2023-teal-dark max-xs:grid-cols-1 md:grid"
+        >
+            <div
+                class="align-center text-wrap flex flex-col items-center truncate px-1 text-xl max-xs:row-start-2"
+            >
+                <span class="whitespace-normal font-bold">{{
+                    leaderboard[1].name
+                }}</span>
+                <span class="">{{ leaderboard[1].points }}</span>
+            </div>
+            <div
+                class="align-center text-wrap flex flex-col items-center truncate px-3 text-2xl"
+            >
+                <span class="whitespace-normal font-bold">{{
+                    leaderboard[0].name
+                }}</span>
+                <span class="">{{ leaderboard[0].points }}</span>
+            </div>
+            <div
+                class="align-center text-wrap flex flex-col items-center truncate px-1 text-lg"
+            >
+                <span class="whitespace-normal font-bold">{{
+                    leaderboard[2].name
+                }}</span>
+                <span class="">{{ leaderboard[2].points }}</span>
+            </div>
+        </div>
     </section>
 </template>

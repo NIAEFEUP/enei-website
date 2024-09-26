@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
+use League\CommonMark\Util\HtmlFilter;
 
 class Event extends Model
 {
     use HasFactory;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +32,12 @@ class Event extends Model
         'event_day_id',
         'description',
         'event_type_id',
-        'room',
+        'location',
+        'external_url',
+    ];
+
+    protected $appends = [
+        'description_html',
     ];
 
     public function event_day(): BelongsTo
@@ -46,5 +58,41 @@ class Event extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(EventType::class, 'event_type_id');
+    }
+
+    public function scopeTalk(Builder $query): void
+    {
+        $query->whereHas('type', function ($query) {
+            $query->where('name', 'talk');
+        });
+    }
+
+    public function scopeActivity(Builder $query): void
+    {
+        $query->whereHas('type', function ($query) {
+            $query->whereNot('name', 'talk');
+        });
+    }
+
+    public function quests(): MorphMany
+    {
+        return $this->morphMany(Quest::class, 'requirement');
+    }
+
+    public function descriptionHtml(): Attribute
+    {
+        return Attribute::get(fn () => Str::markdown($this->description ?? '', [
+            'html_input' => HtmlFilter::STRIP,
+            'allow_unsafe_links' => false,
+        ]));
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'topic' => $this->topic,
+            'event_day' => $this->event_day->toSearchableArray(),
+        ];
     }
 }

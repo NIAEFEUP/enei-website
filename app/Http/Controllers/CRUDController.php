@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Nette\Utils\Json;
 
 /**
  * @template T
@@ -28,13 +32,6 @@ abstract class CRUDController extends Controller
      * @var array<string, string | array<int|string>>
      */
     protected array $rules = [];
-
-    /**
-     * The columns to search in.
-     *
-     * @var array<int, string>
-     */
-    protected array $search = [];
 
     /**
      * The validation rules for the store method.
@@ -68,31 +65,20 @@ abstract class CRUDController extends Controller
         return [];
     }
 
+    /**
+     * The associated relations to load on the model when rendering items.
+     */
+    protected $load = [];
+
     public function index(Request $request)
     {
-        $sort_by = $request->query('sort_by', 'id');
-        $sort_dir = $request->query('sort_dir', 'asc');
-        $query = $this->model::orderBy($sort_by, $sort_dir);
-
-        $filter_by = $request->query('filter_by');
-
-        if ($filter_by) {
-            foreach ($filter_by as $column => $values) {
-                $query->whereIn($column, $values);
-            }
-        }
+        $isSearchable = in_array(\Laravel\Scout\Searchable::class, class_uses($this->model));
 
         $search = $request->query('query');
-
-        if ($search) {
-            $search = explode(' ', $search);
-            foreach ($search as $searchTerm) {
-                $query->where(function ($query) use ($searchTerm) {
-                    foreach ($this->search as $column) {
-                        $query->orWhere($column, 'ILIKE', "%{$searchTerm}%");
-                    }
-                });
-            }
+        if ($isSearchable && $search !== null) {
+            $query = $this->model::search($search)->query(fn (Builder $query) => $query->with($this->load));
+        } else {
+            $query = $this->model::with($this->load)->orderBy('id');
         }
 
         $filteredQuery = collect($request->query())
@@ -101,12 +87,12 @@ abstract class CRUDController extends Controller
 
         $with = $this->with();
 
-        return Inertia::render("CRUD/$this->view/Index", [
+        Log::info('Displaying all {model} records with query: {search}', ['model' => $this->model, 'search' => $search ?? 'none']);
+
+        return Inertia::render("CRUD/{$this->view}/Index", [
             'items' => $items,
             'with' => $with,
-            'sortBy' => $sort_by,
-            'sortDir' => $sort_dir,
-            'filterBy' => $filter_by,
+            'isSearchable' => $isSearchable,
         ]);
     }
 
@@ -115,6 +101,8 @@ abstract class CRUDController extends Controller
         $item = $this->model::find($id);
 
         $with = $this->with();
+
+        Log::info('Displaying {model} record with id: {id}', ['model' => $this->model, 'id' => $id]);
 
         return Inertia::render("CRUD/$this->view/Show", [
             'item' => $item,
@@ -138,7 +126,7 @@ abstract class CRUDController extends Controller
         $with = $this->with();
 
         return Inertia::render("CRUD/$this->view/Edit", [
-            'item' => $item,
+            'item' => $item->load($this->load),
             'with' => $with,
         ]);
     }
@@ -164,6 +152,9 @@ abstract class CRUDController extends Controller
         $newValues = $this->created($validated);
 
         if ($newValues !== null) {
+
+            Log::info('Creating new {model} record with values: {values}', ['model' => $this->model, 'values' => Json::encode($newValues, true)]);
+
             $this->model::create($newValues);
         }
 
@@ -193,6 +184,9 @@ abstract class CRUDController extends Controller
         $newValues = $this->updated($model, $validated);
 
         if ($newValues !== null) {
+
+            Log::info('Updating {model} record with id {id} with values: {values}', ['model' => $this->model, 'id' => $model->id, 'values' => Json::encode($newValues, true)]);
+
             $model->update($newValues);
         }
 
@@ -216,6 +210,9 @@ abstract class CRUDController extends Controller
         $model = $this->model::find($id);
 
         if ($this->destroyed($model->toArray())) {
+
+            Log::alert('Deleting {model} record with id {id}', ['model' => $this->model, 'id' => $model->id]);
+
             $model->delete();
         }
 

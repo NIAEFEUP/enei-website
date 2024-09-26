@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Laravel\Scout\Searchable;
 
 class Enrollment extends Model
 {
     use HasFactory;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,6 +21,7 @@ class Enrollment extends Model
     protected $fillable = [
         'edition_id',
         'participant_id',
+        'points',
     ];
 
     public function edition(): BelongsTo
@@ -33,7 +36,7 @@ class Enrollment extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->using(EnrollmentProduct::class)->withPivot('redeemed');
     }
 
     public function slots(): BelongsToMany
@@ -49,5 +52,13 @@ class Enrollment extends Model
     public function participant(): BelongsTo
     {
         return $this->belongsTo(Participant::class);
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'participant' => $this->participant->user->toSearchableArray(),
+            'edition' => $this->edition->name,
+        ];
     }
 }

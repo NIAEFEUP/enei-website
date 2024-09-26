@@ -2,95 +2,68 @@
 import type Stand from "@/Types/Stand";
 import Sponsor from "@/Components/Home/Sponsor.vue";
 import type { CompanyUser } from "@/Types/User";
-import type { Tier } from "@/Types/Sponsor";
+import type SponsorTier from "@/Types/SponsorTier";
+import { computed } from "vue";
 
 interface Props {
     readonly stands: Stand[];
 }
 
-const { stands } = defineProps<Props>();
+const props = defineProps<Props>();
 
-const shadowColorMap = {
-    PLATINUM: "text-2023-orange",
-    GOLD: "text-2023-teal-dark",
-    SILVER: "text-2023-red-dark",
-} as Record<Tier, string>;
+const stands = computed(() => props.stands);
 
-const silverSponsorStands = stands.filter(
-    (stand) => stand.sponsor?.tier === "SILVER",
+const standTiers = computed(() =>
+    Object.fromEntries(
+        stands.value.map((stand) => [
+            stand.sponsor?.tier?.id,
+            stand.sponsor?.tier,
+        ]),
+    ),
 );
-const goldSponsorStands = stands.filter(
-    (stand) => stand.sponsor?.tier === "GOLD",
-);
-const platSponsorStands = stands.filter(
-    (stand) => stand.sponsor?.tier === "PLATINUM",
+
+const standsPerTier = computed(
+    () =>
+        stands.value.reduce((acc, stand) => {
+            const sponsorTier = stand.sponsor?.tier;
+            if (!sponsorTier) return acc;
+
+            if (!acc.has(sponsorTier.id)) acc.set(sponsorTier.id, []);
+
+            acc.get(sponsorTier.id)?.push(stand);
+
+            return acc;
+        }, new Map<SponsorTier["id"], Stand[]>()) ??
+        ({} as Map<SponsorTier["id"], Stand[]>),
 );
 </script>
 
 <template>
     <div class="flex flex-col gap-12">
-        <section
-            v-if="platSponsorStands.length > 0"
-            id="plat"
-            class="flex flex-col gap-3"
-        >
-            <span class="text-3xl font-bold" :class="shadowColorMap['PLATINUM']"
-                >Platinum</span
-            >
-            <div class="flex flex-row flex-wrap gap-4 md:flex-nowrap">
-                <div
-                    v-for="stand in platSponsorStands"
-                    :key="stand.id"
-                    class="w-48 border border-black shadow-lg shadow-2023-orange"
+        <template v-for="[tierId, tierStands] in standsPerTier" :key="tierId">
+            <section v-if="tierStands.length > 0" class="flex flex-col gap-3">
+                <span
+                    class="text-3xl font-bold"
+                    :style="`color: ${standTiers[tierId].color}`"
                 >
-                    <Sponsor
-                        :company="stand.sponsor?.company?.user as CompanyUser"
+                    {{ standTiers[tierId].name }}
+                </span>
+                <div class="flex flex-row flex-wrap gap-4">
+                    <div
+                        v-for="stand in tierStands"
+                        :key="stand.id"
+                        class="w-48 border border-black shadow-lg"
+                        :style="`color: ${standTiers[tierId].color}`"
                     >
-                    </Sponsor>
+                        <Sponsor
+                            :company="
+                                stand.sponsor?.company?.user as CompanyUser
+                            "
+                        >
+                        </Sponsor>
+                    </div>
                 </div>
-            </div>
-        </section>
-        <section
-            v-if="goldSponsorStands.length > 0"
-            id="gold"
-            class="flex flex-col gap-3"
-        >
-            <span class="text-3xl font-bold" :class="shadowColorMap['GOLD']"
-                >Gold</span
-            >
-            <div class="flex flex-row flex-wrap gap-4">
-                <div
-                    v-for="stand in goldSponsorStands"
-                    :key="stand.id"
-                    class="w-48 border border-black shadow-lg shadow-2023-teal-dark"
-                >
-                    <Sponsor
-                        :company="stand.sponsor?.company?.user as CompanyUser"
-                    >
-                    </Sponsor>
-                </div>
-            </div>
-        </section>
-        <section
-            v-if="silverSponsorStands.length > 0"
-            id="silver"
-            class="flex flex-col gap-3"
-        >
-            <span class="text-3xl font-bold" :class="shadowColorMap['SILVER']"
-                >Silver</span
-            >
-            <div class="flex flex-row flex-wrap gap-4">
-                <div
-                    v-for="stand in silverSponsorStands"
-                    :key="stand.id"
-                    class="w-48 border border-black shadow-lg shadow-2023-red-dark"
-                >
-                    <Sponsor
-                        :company="stand.sponsor?.company?.user as CompanyUser"
-                    >
-                    </Sponsor>
-                </div>
-            </div>
-        </section>
+            </section>
+        </template>
     </div>
 </template>

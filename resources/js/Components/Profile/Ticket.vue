@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type Event from "@/Types/Event";
+import { Link } from "@inertiajs/vue3";
 import route from "ziggy-js";
 
 interface Props {
@@ -9,11 +10,8 @@ interface Props {
 
 const props = defineProps<Props>();
 
-// FIXME: duplicated :P
 const formatTimeString = (time: string): string => {
-    const [hours, minutes] = time.split(":");
-
-    return `${hours}h${minutes}`;
+    return `1970-01-01T${time}.000000Z`;
 };
 
 // https://stackoverflow.com/a/52171480/11571888
@@ -47,12 +45,12 @@ const accentColor = () => {
 </script>
 
 <template>
-    <div class="relative">
+    <Link :href="route('event.show', event)" class="relative">
         <div
             class="grid aspect-[5/2] place-content-stretch place-items-stretch @container"
             :class="[
                 state == 'available'
-                    ? 'select-none opacity-50 blur-sm grayscale'
+                    ? 'cursor-pointer select-none opacity-50 grayscale transition-all hover:blur-none [@media(hover:hover)]:blur-sm'
                     : '',
             ]"
         >
@@ -88,7 +86,7 @@ const accentColor = () => {
             </svg>
 
             <div
-                class="col-start-1 row-start-1 flex max-h-full text-[3.2cqi] font-black text-white"
+                class="col-start-1 row-start-1 flex max-h-full max-w-[350px] text-[3.2cqi] font-black text-white"
                 :class="[state == 'used' ? '' : 'ticket-clip-path']"
             >
                 <div
@@ -101,32 +99,35 @@ const accentColor = () => {
                     ]"
                 >
                     <span
-                        class="flex px-[1em] py-[.5em]"
+                        class="flex px-[.75em] py-[.5em]"
                         :class="accentColor()"
                     >
                         NR: {{ hashCode((event.id + "SINF2023").toString()) }}
                     </span>
 
                     <div
-                        class="my-auto flex flex-col gap-[.25em] px-[1em] py-[.5em]"
+                        class="my-auto flex flex-col gap-[.25em] px-[.75em] py-[.5em]"
                     >
-                        <span>SALA: {{ event.room }}</span>
                         <span
+                            v-if="event.location"
+                            :title="event.location"
+                            class="line-clamp-2 truncate whitespace-normal"
+                            >LOCAL: {{ event.location }}</span
+                        >
+                        <span v-if="event.time_start"
                             >HORA:
                             {{
-                                event.time_start
-                                    ? formatTimeString(event.time_start)
-                                    : ""
+                                $d(
+                                    new Date(
+                                        formatTimeString(event.time_start),
+                                    ),
+                                    "hourMinute",
+                                )
                             }}</span
                         >
-                        <!-- #FIXME: we aren't getting the date :/ -->
-                        <span
+                        <span v-if="event.event_day?.date"
                             >DATA:
-                            {{
-                                event.event_day?.date
-                                    ? $d(event.event_day?.date, "short")
-                                    : "TBA"
-                            }}</span
+                            {{ $d(event.event_day?.date, "short") }}</span
                         >
                     </div>
                 </div>
@@ -140,27 +141,20 @@ const accentColor = () => {
                     ]"
                 >
                     <span
-                        class="flex justify-end px-[1em] py-[.5em] text-right"
+                        class="truncate px-[1em] py-[.5em] text-right"
                         :class="accentColor()"
                     >
-                        {{ event.topic.split(" ")[0] }}
+                        {{ event.topic }}
                     </span>
 
-                    <span class="px-[1em]">{{ event.name }}</span>
+                    <span
+                        class="line-clamp-4 truncate whitespace-normal px-[1em]"
+                        >{{ event.name }}</span
+                    >
                 </div>
             </div>
         </div>
-
-        <template v-if="state == 'available'">
-            <a
-                :href="route('event.show', event)"
-                class="absolute bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 cursor-pointer border border-black bg-2023-red p-6 text-center text-white shadow-2023-teal transition-shadow hover:shadow"
-            >
-                <p class="font-bold">{{ event.name }}</p>
-                <p>+ info</p>
-            </a>
-        </template>
-    </div>
+    </Link>
 </template>
 
 <style>

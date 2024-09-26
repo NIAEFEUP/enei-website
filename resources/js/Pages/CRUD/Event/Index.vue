@@ -16,6 +16,7 @@ interface Props {
         event_days: EventDay[];
         event_types: EventType[];
     };
+    isSearchable?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -40,7 +41,12 @@ const event_types = computed<Record<number, string>>(() =>
 </script>
 
 <template>
-    <CRUDLayout title="Event" :items="items" name="events">
+    <CRUDLayout
+        title="Event"
+        :items="items"
+        name="events"
+        :is-searchable="isSearchable"
+    >
         <template #heading>Events</template>
 
         <template #header>
@@ -55,7 +61,7 @@ const event_types = computed<Record<number, string>>(() =>
                     >Tipo do evento</Header
                 >
                 <Header sort-by="capacity">Capacidade</Header>
-                <Header sort-by="capacity">Sala</Header>
+                <Header sort-by="capacity">Local</Header>
             </HeaderRow>
         </template>
 
@@ -67,7 +73,7 @@ const event_types = computed<Record<number, string>>(() =>
                 <Cell>{{ event_days[item.event_day_id] }}</Cell>
                 <Cell>{{ event_types[item.event_type_id] }}</Cell>
                 <Cell>{{ item.capacity ?? "N/A" }}</Cell>
-                <Cell>{{ item.room }}</Cell>
+                <Cell>{{ item.location }}</Cell>
             </Row>
         </template>
     </CRUDLayout>

@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
 import SpeakersCarousel from "@/Components/Home/SpeakersCarousel.vue";
-import Map from "@/Components/Home/Map.vue";
 import SponsorBanner from "@/Components/Home/SponsorBanner.vue";
 import EnrollSection from "@/Components/Home/EnrollSection.vue";
-import { ModalsContainer } from "vue-final-modal";
+import InfoPopup from "@/Components/Home/InfoPopup.vue";
 import type Edition from "@/Types/Edition";
-import { computed } from "vue";
-import type Sponsor from "@/Types/Sponsor";
 import type EventDay from "@/Types/EventDay";
 import type { User } from "@/Types/User";
 import { OhVueIcon } from "oh-vue-icons";
+import type SponsorTier from "@/Types/SponsorTier";
+import { default as MapComponent } from "@/Components/Home/Map.vue";
 
 interface Props {
     edition: Edition;
-    sponsors: Sponsor[];
+    sponsorTiers: SponsorTier[];
     speakers: User[];
     days: EventDay[];
     activityCount: number;
@@ -23,19 +22,7 @@ interface Props {
     canEnroll: boolean;
 }
 
-const { sponsors } = defineProps<Props>();
-
-const sponsorGroups = computed(
-    () =>
-        sponsors.reduce(
-            (acc, sponsor) => {
-                acc[sponsor.tier] ??= [];
-                acc[sponsor.tier].push(sponsor);
-                return acc;
-            },
-            {} as Record<Sponsor["tier"], Sponsor[]>,
-        ) ?? ({} as Record<Sponsor["tier"], Sponsor[]>),
-);
+defineProps<Props>();
 
 const formattedDate = (
     startDate: string,
@@ -63,6 +50,7 @@ const formattedDate = (
 
 <template>
     <AppLayout :title="$t('pages.home.title')">
+        <InfoPopup v-if="$page.props.auth.user && canEnroll" />
         <a
             v-if="canEnroll"
             href="#enroll-wrapper"
@@ -151,14 +139,14 @@ const formattedDate = (
             </h2>
             <template
                 v-if="
-                    days.length !== 0 &&
-                    standCount !== 0 &&
-                    talkCount !== 0 &&
+                    days.length !== 0 ||
+                    standCount !== 0 ||
+                    talkCount !== 0 ||
                     activityCount !== 0
                 "
             >
                 <div
-                    class="mx-[10%] grid grid-cols-4 gap-4 border border-solid border-black p-12 text-xl font-bold text-2023-teal shadow-2xl shadow-2023-orange max-lg:grid-cols-2 max-xs:grid-cols-1"
+                    class="mx-[10%] grid gap-4 border border-solid border-black p-12 text-xl font-bold text-2023-teal shadow-2xl shadow-2023-orange max-lg:grid-cols-2 max-xs:grid-cols-1 md:flex md:flex-row md:items-center md:justify-around"
                 >
                     <span class="text-center"
                         >{{ days.length }} {{ $t("events.days") }}</span
@@ -205,33 +193,25 @@ const formattedDate = (
         </section>
         <!-- SPONSORS -->
         <section id="sponsors" class="flex flex-col gap-10 px-20 py-20">
-            <ModalsContainer />
             <p
                 class="mr-[5px] flex w-min place-self-center border border-solid border-black bg-2023-teal-dark p-3 text-2xl font-bold text-white shadow shadow-2023-bg"
             >
                 {{ $t("pages.home.sponsors.label") }}
             </p>
             <SponsorBanner
-                :sponsors="sponsorGroups.PLATINUM"
-                :title="$t('pages.home.sponsors.tier.plat')"
-                color="orange"
-            ></SponsorBanner>
-            <SponsorBanner
-                :sponsors="sponsorGroups.GOLD"
-                :title="$t('pages.home.sponsors.tier.gold')"
-                color="teal-dark"
-            ></SponsorBanner>
-            <SponsorBanner
-                :sponsors="sponsorGroups.SILVER"
-                :title="$t('pages.home.sponsors.tier.silver')"
-                color="red-dark"
+                v-for="(tier, idx) in sponsorTiers"
+                :key="tier.id"
+                :title="tier.name"
+                :sponsors="tier.sponsors ?? []"
+                :color="tier.color"
+                :idx="idx"
             ></SponsorBanner>
         </section>
         <!-- CALL TO ACTION -->
         <EnrollSection v-if="canEnroll" id="enroll-wrapper" />
         <!-- MAP -->
         <section class="bg-2023-orange p-10">
-            <Map></Map>
+            <MapComponent />
         </section>
     </AppLayout>
 </template>

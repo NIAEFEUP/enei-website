@@ -17,6 +17,7 @@ class SlotCRUDController extends CRUDController
         'quests' => 'sometimes|array|exists:quests,id',
         'points' => 'required|integer',
         'name' => 'required|string',
+        'image' => 'nullable|mimes:jpg,jpeg,png|max:1024',
     ];
 
     protected function created(array $new): ?array
@@ -28,6 +29,11 @@ class SlotCRUDController extends CRUDController
         $slot = Slot::create($new);
 
         $slot->quests()->sync($quests);
+
+        if (isset($new['image'])) {
+            $slot->updateImageSlot($new['image']);
+        }
+
         DB::commit();
 
         return null;
@@ -40,6 +46,10 @@ class SlotCRUDController extends CRUDController
 
         $old->quests()->sync($quests);
 
+        if (isset($new['image'])) {
+            $old->updateImageSlot($new['image']);
+        }
+
         return $new;
     }
 
@@ -49,6 +59,4 @@ class SlotCRUDController extends CRUDController
             'quests' => Quest::all(),
         ];
     }
-
-    protected array $search = ['name'];
 }

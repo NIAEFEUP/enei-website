@@ -15,13 +15,14 @@ use App\Http\Controllers\EventDayCRUDController;
 use App\Http\Controllers\EventTypeCRUDController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\ProductCRUDController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\QuestController;
 use App\Http\Controllers\QuestCRUDController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SlotCRUDController;
 use App\Http\Controllers\SponsorCRUDController;
+use App\Http\Controllers\SponsorTierCRUDController;
 use App\Http\Controllers\StaffCRUDController;
 use App\Http\Controllers\StandCRUDController;
 use App\Http\Controllers\UserController;
@@ -46,7 +47,11 @@ Route::get('/team', [DepartmentController::class, 'show'])->name('team');
 
 Route::get('/program', [ProgramController::class, 'show'])->name('program');
 
-Route::get('/shop', [ShopController::class, 'show'])->name('shop');
+Route::prefix('/shop')->name('shop')->group(function () {
+    Route::get('/', [ShopController::class, 'show'])->name('.show');
+    Route::post('/{product}/buy', [ShopController::class, 'buyProduct'])->name('.product.buy');
+    Route::post('/{product}/{enrollment}/redeem', [ShopController::class, 'redeemProduct'])->name('.product.redeem');
+});
 
 Route::prefix('/competition')->name('competition')->group(function () {
     Route::get('/{competition:slug}', [CompetitionController::class, 'show'])->name('.show');
@@ -59,6 +64,7 @@ Route::prefix('/event')->name('event')->group(function () {
     Route::prefix('/{event}')->group(function () {
         Route::get('/', [EventController::class, 'show'])->name('.show');
         Route::put('/join', [EventController::class, 'join'])->name('.join');
+        Route::put('/leave', [EventController::class, 'leave'])->name('.leave');
     });
 });
 
@@ -92,6 +98,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
                     '/slots' => SlotCRUDController::class,
                     '/enrollments' => EnrollmentCRUDController::class,
                     '/eventTypes' => EventTypeCRUDController::class,
+                    '/sponsorTiers' => SponsorTierCRUDController::class,
                 ]);
 
                 Route::name('index')->get('/', function () {
@@ -102,16 +109,26 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::prefix('user')->group(function () {
             Route::get('/profile', [UserController::class, 'show'])
                 ->name('profile.show');
-            Route::prefix('/{participant}')->whereNumber('participant')->controller(ParticipantController::class)->group(function () {
-                Route::get('', 'show')->name('participant.profile');
+
+            Route::prefix('/{user}')->whereNumber('user')->controller(UserController::class)->group(function () {
+                Route::get('/profile', 'show')->name('user.profile');
+                Route::get('/participants/cv', 'downloadParticipantCVs')->name('user.company.participants.cvs');
             });
+
+            Route::get('/scan-code', [UserController::class, 'scanQuestCode'])
+                ->name('user.scan-code');
+
             Route::prefix('cv')->group(function () {
                 Route::delete('/', [CVController::class, 'destroy'])->name('current-user-cv.destroy');
                 Route::put('/', [CVController::class, 'update'])->name('current-user-cv.update');
                 Route::get('/download', [FileController::class, 'download'])->name('file.download');
             });
+
             Route::get('/profile/edit', [UserController::class, 'edit'])
                 ->name('profile.edit');
+
+            Route::post('/generate-quest-code', [UserController::class, 'generateQuestCode'])
+                ->name('generate-quest-code');
         });
     }
 );

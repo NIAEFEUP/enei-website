@@ -67,7 +67,7 @@ onUnmounted(() => {
     </div>
     <div
         v-show="open"
-        class="absolute left-0 top-[5.6rem] z-50 m-0 flex h-screen w-full flex-col bg-2023-teal-dark py-6 text-2xl font-semibold text-2023-bg md:hidden"
+        class="absolute left-0 top-[4.9rem] m-0 flex h-screen w-full flex-col bg-2023-teal-dark py-6 text-2xl font-semibold text-2023-bg md:hidden"
     >
         <div class="flex flex-col items-center">
             <template
@@ -86,7 +86,10 @@ onUnmounted(() => {
                 </ResponsiveNavLink>
             </template>
         </div>
-        <section class="flex flex-col items-center pt-6">
+        <section
+            v-if="props.options.competitions.length > 0"
+            class="flex flex-col items-center pt-6"
+        >
             <h2 class="pb-3 text-center font-bold text-2023-orange">
                 Competições
             </h2>

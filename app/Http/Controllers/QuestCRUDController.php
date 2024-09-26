@@ -16,8 +16,8 @@ class QuestCRUDController extends CRUDController
 
     protected array $rules = [
         'name' => 'required|string',
-        'category' => 'required|string|in:company,talk,workshop,milestone,teambuiling',
-        'requirement' => 'required|regex:/^((stand|event);[0-9]+)$/',
+        'category' => 'required|string|in:company,talk,workshop,milestone,teambuilding',
+        'requirement' => ['sometimes', 'regex:/^((stand|event|general);[0-9]+)$/'],
         'edition_id' => 'required|exists:editions,id',
     ];
 
@@ -25,12 +25,17 @@ class QuestCRUDController extends CRUDController
     {
         return [
             'editions' => Edition::all(),
-            'stands' => Stand::all(),
+            'stands' => Stand::with([
+                'sponsor' => [
+                    'company' => [
+                        'user',
+                    ],
+                ],
+                'event_day',
+            ])->get(),
             'events' => Event::all(),
         ];
     }
-
-    protected array $search = ['name', 'category'];
 
     protected function created(array $new): ?array
     {
@@ -41,7 +46,12 @@ class QuestCRUDController extends CRUDController
             'event' => Event::class,
             default => null,
         };
-        $requirement_id = $requirement[1];
+
+        if ($requirement_type !== null) {
+            $requirement_id = $requirement[1];
+        } else {
+            $requirement_id = null;
+        }
 
         return [
             'name' => $new['name'],
@@ -60,7 +70,12 @@ class QuestCRUDController extends CRUDController
             'company' => Company::class,
             default => null,
         };
-        $requirement_id = $requirement[1];
+
+        if ($requirement_type !== null) {
+            $requirement_id = $requirement[1];
+        } else {
+            $requirement_id = null;
+        }
 
         return [
             'name' => $new['name'],
