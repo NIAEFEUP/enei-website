@@ -125,7 +125,7 @@ onMounted(() => {
                 data-type="talk"
                 @click="toggle"
             >
-                Palestras
+                {{ $t("events.talks") }}
             </button>
             <button
                 v-if="(day.activities?.length ?? 0) > 0"
@@ -133,7 +133,7 @@ onMounted(() => {
                 data-type="activity"
                 @click="toggle"
             >
-                Atividades
+                {{ $t("pages.event.workshops") }}
             </button>
             <button
                 v-if="(day.stands?.length ?? 0) > 0"
@@ -141,7 +141,7 @@ onMounted(() => {
                 data-type="stand"
                 @click="toggle"
             >
-                Bancas
+                {{ $t("pages.event.stands") }}
             </button>
             <button
                 v-if="(day.competitions?.length ?? 0) > 0"
@@ -162,7 +162,9 @@ onMounted(() => {
         {{ day.theme }}
     </p>
     <template v-if="noInfo">
-        <p class="pt-40 text-4xl font-bold text-2023-teal-dark">Em breve...</p>
+        <p class="pt-40 text-4xl font-bold text-2023-teal-dark">
+            {{ $t("general.soon") }}
+        </p>
     </template>
     <template v-else>
         <WithTimeline :start-time="times.start" :end-time="times.end">
