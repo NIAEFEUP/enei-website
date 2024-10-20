@@ -1,5 +1,7 @@
 <?php
 
+// TODO: if Fortify releases new versions that are interesting to use, we should update this file accordingly.
+
 use App\Http\Controllers\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;

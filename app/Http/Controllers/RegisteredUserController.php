@@ -1,13 +1,15 @@
 <?php
 
+// TODO: if Fortify releases new versions that are interesting to use, we should update this file accordingly.
+
 namespace App\Http\Controllers;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
-use Inertia\Inertia;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\RegisterViewResponse;
@@ -37,15 +39,27 @@ class RegisteredUserController extends Controller
      */
     public function create(Request $request)
     {
+
+        /**
+         * @var RegisterViewResponse
+         */
+        $response = app(RegisterViewResponse::class);
+
         $promoter = null;
         if ($request->is('register/promoter/*')) {
             $promoter = $request->route('promoter');
+
+            // TODO: store the code somewhere or do something with the promoter code here
+            // Since we do not want to allow users to edit this code we don't need to send it to the frontend
+
+            // One idea is to store the respective promoter in cache (since we already use that) and provide the cache key to the View
+            // On submission, that same cache key will be used to associate a given promoter with the newly registered participant.
+            // Additional measures can be taken to ensure this system does not get exploited.
+
+            Cookie::queue('', '', 3);
         }
 
-        // return app(RegisterViewResponse::class);
-        return Inertia::render('Auth/Register', [
-            'promoter' => $promoter,
-        ]);
+        return $response;
     }
 
     /**
