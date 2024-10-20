@@ -51,7 +51,7 @@ const iconColor: Record<string, string> = {
 
 <template>
     <div
-        class="m-4 flex justify-between border border-solid border-black bg-2023-bg p-3 text-2023-teal shadow-xl shadow-2023-red-dark max-md:m-2 md:min-w-[30vw]"
+        class="bg-2023-bg text-2023-teal shadow-2023-red-dark m-4 flex justify-between border border-solid border-black p-3 shadow-xl max-md:m-2 md:min-w-[30vw]"
     >
         <div class="flex-col">
             <div>
@@ -96,7 +96,7 @@ const iconColor: Record<string, string> = {
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="w-8 text-2023-teal"
+                    class="text-2023-teal w-8"
                     viewBox="0 0 512 512"
                 >
                     <path
@@ -120,7 +120,7 @@ const iconColor: Record<string, string> = {
             <template v-if="isAdmin(user) || isStaff || isCompany(user)">
                 <!-- TODO: this does not bring problems to us because we can only see other people's profiles if we are admins or companies (under certain conditions) which already would have the scan button enabled -->
                 <Link
-                    class="flex w-fit cursor-pointer rounded-full text-2023-teal"
+                    class="text-2023-teal flex w-fit cursor-pointer rounded-full"
                     :href="route('user.scan-code')"
                 >
                     <OhVueIcon name="io-camera" scale="1.4"></OhVueIcon>

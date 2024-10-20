@@ -56,13 +56,13 @@ const colorPicker = () => {
         </section>
         <!-- details -->
         <section
-            class="m relative mt-32 flex flex-row flex-wrap justify-center gap-8 bg-2023-teal-dark px-16 py-24"
+            class="m bg-2023-teal-dark relative mt-32 flex flex-row flex-wrap justify-center gap-8 px-16 py-24"
             :class="[
                 { 'mt-20': companies.length > 0 && speakers.length === 0 },
             ]"
         >
             <h1
-                class="absolute -top-7 mr-2 flex border border-black bg-2023-red p-2 px-3 text-center text-2xl font-bold text-white shadow-md shadow-2023-bg max-lg:left-auto"
+                class="bg-2023-red shadow-2023-bg absolute -top-7 mr-2 flex border border-black p-2 px-3 text-center text-2xl font-bold text-white shadow-md max-lg:left-auto"
             >
                 {{ event.name }}
             </h1>
@@ -71,7 +71,7 @@ const colorPicker = () => {
                 v-html="event.description_html"
             ></div>
             <h1
-                class="absolute -bottom-5 mr-2 flex border border-black bg-2023-red-dark p-2 px-3 text-xl font-bold text-white shadow-md shadow-2023-bg max-lg:left-auto"
+                class="bg-2023-red-dark shadow-2023-bg absolute -bottom-5 mr-2 flex border border-black p-2 px-3 text-xl font-bold text-white shadow-md max-lg:left-auto"
             >
                 Dia
                 {{ event.event_day ? $d(event.event_day.date, "day") : "N/A" }},
@@ -98,7 +98,7 @@ const colorPicker = () => {
             <div
                 v-for="(company, idx) in companies"
                 :key="idx"
-                class="w-[200px] border border-black shadow shadow-2023-red"
+                class="shadow-2023-red w-[200px] border border-black shadow"
             >
                 <Sponsor :company="company" />
             </div>
@@ -114,7 +114,7 @@ const colorPicker = () => {
                         },
                     })
                 "
-                class="inline-flex border border-black bg-2023-red p-2 px-3 text-center text-2xl font-bold text-white shadow-2023-teal transition hover:shadow-md"
+                class="bg-2023-red shadow-2023-teal inline-flex border border-black p-2 px-3 text-center text-2xl font-bold text-white transition hover:shadow-md"
             >
                 Scan QR Code
             </Link>
@@ -126,7 +126,7 @@ const colorPicker = () => {
             class="flex w-full flex-col items-center gap-4 place-self-center py-24"
         >
             <p
-                class="flex w-fit flex-col text-center text-3xl font-bold text-2023-red"
+                class="text-2023-red flex w-fit flex-col text-center text-3xl font-bold"
             >
                 <span v-if="hasJoined">Vemo-nos lá!</span>
                 <span v-else-if="!isEnrolled"
@@ -191,18 +191,18 @@ const colorPicker = () => {
         >
             <div
                 v-if="enrollments.length > 0"
-                class="flex flex-col items-center overflow-y-auto border border-black bg-2023-bg shadow-lg shadow-2023-teal"
+                class="bg-2023-bg shadow-2023-teal flex flex-col items-center overflow-y-auto border border-black shadow-lg"
             >
                 <div
                     v-for="enrollment in enrollments"
                     :key="enrollment.id"
-                    class="flex w-full items-center justify-between gap-3 p-3 even:bg-2023-orange even:bg-opacity-20"
+                    class="even:bg-2023-orange flex w-full items-center justify-between gap-3 p-3 even:bg-opacity-20"
                 >
                     {{ enrollment.participant?.user?.name ?? enrollment.id }} -
                     {{ enrollment.participant?.user?.email ?? enrollment.id }}
                 </div>
             </div>
-            <p v-else class="text-center text-2xl font-bold text-2023-teal">
+            <p v-else class="text-2023-teal text-center text-2xl font-bold">
                 Ainda nenhum participante se inscreveu neste evento.
             </p>
         </div>

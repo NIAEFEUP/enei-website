@@ -20,14 +20,14 @@ defineProps<Props>();
                 class="flex content-center items-center justify-center self-center py-10"
             >
                 <h1
-                    class="w-fit border border-black bg-2023-red p-2 px-5 text-2xl font-bold text-white shadow-md shadow-2023-bg"
+                    class="bg-2023-red shadow-2023-bg w-fit border border-black p-2 px-5 text-2xl font-bold text-white shadow-md"
                 >
                     Loja
                 </h1>
             </div>
             <p
                 v-if="points !== null"
-                class="py-5 text-center text-xl font-bold text-2023-teal-dark"
+                class="text-2023-teal-dark py-5 text-center text-xl font-bold"
             >
                 Tens {{ points }}
                 <img
@@ -58,7 +58,7 @@ defineProps<Props>();
         <template v-else>
             <div class="flex items-center justify-center">
                 <p
-                    class="pt-80 text-center text-5xl font-bold text-2023-teal-dark"
+                    class="text-2023-teal-dark pt-80 text-center text-5xl font-bold"
                 >
                     Em breve...
                 </p>

@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
-
 </script>
 
 <template>
-
     <AppLayout title="Home" class="flex flex-col">
-
-        <div class="absolute inset-0 background z-2"></div>
-        <div class="absolute inset-0 gradient-overlay z-0"></div>
+        <div class="background z-2 absolute inset-0"></div>
+        <div class="gradient-overlay absolute inset-0 z-0"></div>
 
         <section
-            class="grow relative flex flex-col gap-8 px-5 py-36 md:justify-evenly md:py-0 md:px-0 z-10"
+            class="relative z-10 flex grow flex-col gap-8 px-5 py-36 md:justify-evenly md:px-0 md:py-0"
         >
-            <div class="mx-auto md:ml-36 flex-grow md:flex-grow-0">
+            <div class="mx-auto flex-grow md:ml-36 md:flex-grow-0">
                 <h1
                     class="w-3/12 text-justify font-space-grotesk text-5xl font-bold tracking-tight text-white md:text-7xl"
                 >
@@ -23,14 +20,14 @@ import AppLayout from "@/Layouts/AppLayout.vue";
                     <p class="whitespace-nowrap lowercase">Informática</p>
                 </h1>
                 <p
-                    class="font-space-grotesk text-2xl text-white md:text-4xl uppercase"
+                    class="font-space-grotesk text-2xl uppercase text-white md:text-4xl"
                 >
                     Porto 2025
                 </p>
             </div>
             <div class="mx-auto">
                 <p
-                    class="mr-2 w-48 bg-enei-beige p-2.5 px-8 text-center font-space-grotesk text-lg font-bold text-enei-blue uppercase"
+                    class="mr-2 w-48 bg-enei-beige p-2.5 px-8 text-center font-space-grotesk text-lg font-bold uppercase text-enei-blue"
                 >
                     Brevemente
                 </p>
@@ -49,10 +46,9 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 .gradient-overlay {
     mix-blend-mode: plus-darker;
-    background: linear-gradient(180deg, #0B4F6C 8%, #EFE3CA 100%);
+    background: linear-gradient(180deg, #0b4f6c 8%, #efe3ca 100%);
     opacity: 92%;
 }
-
 
 @media (max-width: 768px) {
     .background {

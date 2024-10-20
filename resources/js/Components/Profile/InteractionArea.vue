@@ -48,7 +48,7 @@ onMounted(() => {
     <section class="flex h-full w-full flex-1 flex-col pt-10">
         <div
             id="tab-picker"
-            class="flex flex-row justify-center gap-4 pt-5 font-bold text-2023-teal"
+            class="text-2023-teal flex flex-row justify-center gap-4 pt-5 font-bold"
         >
             <button
                 v-for="(button, id) in buttons"

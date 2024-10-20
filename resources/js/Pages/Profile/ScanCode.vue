@@ -58,10 +58,10 @@ const onDetect = async ([firstDetectedCode]) => {
 <template>
     <AppLayout title="Ler QR Code">
         <div
-            class="flex w-full flex-col items-center gap-5 pt-10 text-2023-teal-dark"
+            class="text-2023-teal-dark flex w-full flex-col items-center gap-5 pt-10"
         >
             <h2
-                class="w-fit border border-black bg-2023-teal px-3 py-2 text-2xl font-bold text-2023-bg shadow shadow-2023-red"
+                class="bg-2023-teal text-2023-bg shadow-2023-red w-fit border border-black px-3 py-2 text-2xl font-bold shadow"
             >
                 Instruções
             </h2>
@@ -77,14 +77,14 @@ const onDetect = async ([firstDetectedCode]) => {
                     dígitos situado no mesmo local.
                 </li>
                 <li>
-                    <span class="font-bold text-2023-red">IMPORTANTE</span> -
+                    <span class="text-2023-red font-bold">IMPORTANTE</span> -
                     Antes de scannar verificar a tarefa selecionada no dropdown
                     em baixo, o dia deve corresponder ao atual
                 </li>
             </ul>
             <div
                 :hidden="!scanning"
-                class="h-80 w-80 border border-black shadow-lg shadow-2023-red"
+                class="shadow-2023-red h-80 w-80 border border-black shadow-lg"
             >
                 <QrcodeStream
                     @camera-on="scanning = true"

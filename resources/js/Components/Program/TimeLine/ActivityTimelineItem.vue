@@ -22,9 +22,9 @@ const formatTimeString = (time: string): string => {
 
 <template>
     <article
-        class="relative flex flex-col border-b-2 border-2023-teal-dark pb-4"
+        class="border-2023-teal-dark relative flex flex-col border-b-2 pb-4"
     >
-        <h2 class="text-2xl font-bold text-2023-orange">
+        <h2 class="text-2023-orange text-2xl font-bold">
             <em
                 ><Link
                     :href="route('event.show', event)"
@@ -34,12 +34,12 @@ const formatTimeString = (time: string): string => {
                 ></em
             >
         </h2>
-        <p class="text-lg text-2023-teal-dark">{{ event.topic }}</p>
+        <p class="text-2023-teal-dark text-lg">{{ event.topic }}</p>
         <ul v-if="speakers" class="flex flex-col">
             <li
                 v-for="user in speakers"
                 :key="user.id"
-                class="font-bold text-2023-teal"
+                class="text-2023-teal font-bold"
             >
                 {{ user.name
                 }}<template v-if="user.usertype?.organization">
@@ -60,7 +60,7 @@ const formatTimeString = (time: string): string => {
             {{ $d(new Date(formatTimeString(event.time_end)), "hourMinute") }}
         </span>
         <span
-            class="absolute -left-[calc(2rem+17.75px)] top-0 inline-flex h-8 w-8 items-center justify-center rounded-sm bg-2023-orange text-xl font-semibold text-white"
+            class="bg-2023-orange absolute -left-[calc(2rem+17.75px)] top-0 inline-flex h-8 w-8 items-center justify-center rounded-sm text-xl font-semibold text-white"
             >i</span
         >
     </article>

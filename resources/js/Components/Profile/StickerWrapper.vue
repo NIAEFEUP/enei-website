@@ -6,7 +6,7 @@ import Sticker from "./Sticker.vue";
 <template>
     <p
         v-if="($page.props.slots as Slot[]).length === 0"
-        class="flex w-full flex-auto items-center justify-center pt-8 text-center text-2xl font-bold text-2023-teal-dark"
+        class="text-2023-teal-dark flex w-full flex-auto items-center justify-center pt-8 text-center text-2xl font-bold"
     >
         Ainda não há conquistas para completares. Fica de olho nesta secção!
     </p>

@@ -57,7 +57,7 @@ export default {
         forms,
         typography,
         containers,
-        plugin(function({ matchUtilities, theme }) {
+        plugin(function ({ matchUtilities, theme }) {
             matchUtilities(
                 {
                     shadow: (value) => {

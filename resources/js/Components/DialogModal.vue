@@ -16,16 +16,16 @@ const close = () => emit("close");
         @close="close"
     >
         <div class="px-6 py-4">
-            <div class="text-lg font-medium text-2023-red">
+            <div class="text-2023-red text-lg font-medium">
                 <slot name="title" />
             </div>
 
-            <div class="mt-4 text-sm text-2023-red-dark">
+            <div class="text-2023-red-dark mt-4 text-sm">
                 <slot name="content" />
             </div>
         </div>
 
-        <div class="flex flex-row justify-end bg-2023-bg px-6 py-4 text-right">
+        <div class="bg-2023-bg flex flex-row justify-end px-6 py-4 text-right">
             <slot name="footer" />
         </div>
     </Modal>

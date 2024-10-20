@@ -32,9 +32,9 @@ defineProps<Props>();
         <img
             :src="company?.profile_photo_url"
             :alt="company?.name"
-            class="mr-2 h-auto max-w-[20em] justify-center bg-2023-bg p-3"
+            class="bg-2023-bg mr-2 h-auto max-w-[20em] justify-center p-3"
         />
-        <div class="flex w-full flex-col items-center gap-4 text-2023-red">
+        <div class="text-2023-red flex w-full flex-col items-center gap-4">
             <a
                 v-if="company?.usertype?.social_media?.website"
                 class="text-xl font-bold underline"

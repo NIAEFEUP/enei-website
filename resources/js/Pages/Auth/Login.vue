@@ -63,7 +63,7 @@ const submit = () => {
             </label>
 
             <div
-                class="flex flex-col items-center gap-2 font-semibold text-2023-teal underline"
+                class="text-2023-teal flex flex-col items-center gap-2 font-semibold underline"
             >
                 <Link :href="route('register')">Ainda não tens conta?</Link>
 

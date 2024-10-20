@@ -37,13 +37,13 @@ onUnmounted(() => {
     <div class="flex md:hidden">
         <button
             aria-label="Open navigation menu"
-            class="inline-flex items-center justify-center px-2 text-2023-teal"
+            class="text-2023-teal inline-flex items-center justify-center px-2"
             @click="open = !open"
         >
             <template v-if="!open">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="w-10 text-2023-teal-dark"
+                    class="text-2023-teal-dark w-10"
                     viewBox="0 0 512 512"
                 >
                     <path
@@ -67,7 +67,7 @@ onUnmounted(() => {
     </div>
     <div
         v-show="open"
-        class="absolute left-0 top-[4.9rem] m-0 flex h-screen w-full flex-col bg-2023-teal-dark py-6 text-2xl font-semibold text-2023-bg md:hidden"
+        class="bg-2023-teal-dark text-2023-bg absolute left-0 top-[4.9rem] m-0 flex h-screen w-full flex-col py-6 text-2xl font-semibold md:hidden"
     >
         <div class="flex flex-col items-center">
             <template
@@ -90,7 +90,7 @@ onUnmounted(() => {
             v-if="props.options.competitions.length > 0"
             class="flex flex-col items-center pt-6"
         >
-            <h2 class="pb-3 text-center font-bold text-2023-orange">
+            <h2 class="text-2023-orange pb-3 text-center font-bold">
                 Competições
             </h2>
             <template
@@ -105,7 +105,7 @@ onUnmounted(() => {
             </template>
         </section>
         <section class="py-6">
-            <h2 class="pb-3 text-center font-bold text-2023-orange">Edições</h2>
+            <h2 class="text-2023-orange pb-3 text-center font-bold">Edições</h2>
             <div
                 class="flex w-full flex-wrap justify-center gap-5 px-12"
                 style="grid-template-columns: repeat(auto-fill, 100px)"

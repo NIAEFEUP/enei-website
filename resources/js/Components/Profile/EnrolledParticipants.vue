@@ -19,24 +19,24 @@ const user = usePage().props.user as Participant;
         class="mt-10 flex flex-col items-center gap-3"
     >
         <div class="flex w-full flex-col md:flex-row md:justify-between">
-            <h2 class="p-3 text-2xl font-bold text-2023-teal">
+            <h2 class="text-2023-teal p-3 text-2xl font-bold">
                 Participantes que visitaram a sua empresa: {{ visitors.length }}
             </h2>
             <a
                 v-if="$page.props"
-                class="inline-flex items-center justify-center border border-black bg-2023-orange px-4 py-2 text-center text-xl font-bold text-white shadow-2023-teal transition-shadow hover:shadow"
+                class="bg-2023-orange shadow-2023-teal inline-flex items-center justify-center border border-black px-4 py-2 text-center text-xl font-bold text-white transition-shadow hover:shadow"
                 :href="route('user.company.participants.cvs', { user })"
             >
                 Descarregar CVs
             </a>
         </div>
         <div
-            class="flex w-full flex-col items-center border border-black bg-2023-bg shadow-lg shadow-2023-teal"
+            class="bg-2023-bg shadow-2023-teal flex w-full flex-col items-center border border-black shadow-lg"
         >
             <div
                 v-for="visitor in visitors"
                 :key="visitor.id"
-                class="flex w-full items-center justify-between p-3 even:bg-2023-orange even:bg-opacity-20"
+                class="even:bg-2023-orange flex w-full items-center justify-between p-3 even:bg-opacity-20"
             >
                 {{ visitor.user?.name ?? visitor.id }}
                 <div class="flex gap-4">
@@ -65,7 +65,7 @@ const user = usePage().props.user as Participant;
         </div>
     </section>
     <div v-else class="flex h-full flex-1 items-center justify-center">
-        <p class="text-center text-2xl font-bold text-2023-teal">
+        <p class="text-2023-teal text-center text-2xl font-bold">
             Ainda nenhum participante visitou a sua empresa.
         </p>
     </div>

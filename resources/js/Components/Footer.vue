@@ -65,7 +65,7 @@ const contacts = [
             </div>
         </section>
         <PortoTechBanner />
-        <div class="container mx-auto text-center font-bold text-2023-teal">
+        <div class="text-2023-teal container mx-auto text-center font-bold">
             <p>
                 Copyright &copy; 2023
                 <a href="https://ni.fe.up.pt/">NIAEFEUP</a>, todos os direitos
