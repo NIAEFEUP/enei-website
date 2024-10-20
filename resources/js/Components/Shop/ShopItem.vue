@@ -41,7 +41,7 @@ const buyProduct = () => {
             <img :src="product.image_product_url" />
         </div>
         <button
-            class="flex flex-1 flex-col justify-between bg-2023-orange px-4 py-2 text-white disabled:opacity-50"
+            class="bg-2023-orange flex flex-1 flex-col justify-between px-4 py-2 text-white disabled:opacity-50"
             :disabled="!product.canBeBought && !product.enrollments"
             @click="modalOpen = true"
         >
@@ -98,12 +98,12 @@ const buyProduct = () => {
         >
             <div
                 v-if="product.enrollments.length > 0"
-                class="flex flex-col items-center overflow-y-auto border border-black bg-2023-bg shadow-lg shadow-2023-teal"
+                class="bg-2023-bg shadow-2023-teal flex flex-col items-center overflow-y-auto border border-black shadow-lg"
             >
                 <div
                     v-for="enrollment in product.enrollments"
                     :key="enrollment.id"
-                    class="flex w-full items-center justify-between gap-3 p-3 even:bg-2023-orange even:bg-opacity-20"
+                    class="even:bg-2023-orange flex w-full items-center justify-between gap-3 p-3 even:bg-opacity-20"
                 >
                     {{ enrollment.participant?.user?.name ?? enrollment.id }} -
                     {{ enrollment.participant?.user?.email ?? enrollment.id }}
@@ -121,7 +121,7 @@ const buyProduct = () => {
                 </div>
             </div>
             <div v-else class="flex h-full flex-1 items-center justify-center">
-                <p class="text-center text-2xl font-bold text-2023-teal">
+                <p class="text-2023-teal text-center text-2xl font-bold">
                     Ainda nenhum participante comprou este produto.
                 </p>
             </div>

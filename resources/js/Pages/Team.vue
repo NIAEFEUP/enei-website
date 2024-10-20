@@ -25,7 +25,7 @@ const colors: Array<string> = [
             class="flex flex-col items-center gap-7 pt-10"
         >
             <h1
-                class="w-fit border border-black bg-2023-red p-2 px-5 text-2xl font-bold text-white shadow-md shadow-2023-bg"
+                class="bg-2023-red shadow-2023-bg w-fit border border-black p-2 px-5 text-2xl font-bold text-white shadow-md"
             >
                 Equipa
             </h1>
@@ -37,7 +37,7 @@ const colors: Array<string> = [
             ></SINFTeam>
         </div>
         <div v-else>
-            <p class="pt-80 text-center text-5xl font-bold text-2023-teal-dark">
+            <p class="text-2023-teal-dark pt-80 text-center text-5xl font-bold">
                 Em breve...
             </p>
         </div>

@@ -2,16 +2,24 @@
 
 namespace App\Traits;
 
+use App\Libs\JWTLib;
+
 trait HasReferralLink
 {
-    public function get_referral_link(): string
-    {
-        // TODO: Add a proper referral code
-        $code = 'TODO'; // $this->promoter;
-        // FIXME: This code is currently using the home page
-        // for referrals, where should it redirect to?
-        $link = route('home', ['ref' => $code]);
+    abstract private function getPromoterCode(): string;
 
-        return 'TODO: implement this';
+    public function getReferralLink(): string
+    {
+        $jwt_signer = new JWTLib('TODO: update this to use signer registered to application container. That one should be instantiated with a key from env');
+
+        $payload = [
+            'promoter' => $this->getPromoterCode(),
+        ];
+
+        $code = $jwt_signer->generate($payload);
+
+        $link = route('register_with_promoter', ['promoter' => $code]);
+
+        return $link;
     }
 }

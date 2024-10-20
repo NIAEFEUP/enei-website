@@ -24,7 +24,7 @@ const description = computed(() => {
 
 <template>
     <Head :title="props.status.toString()" />
-    <main class="min-h-screen bg-2023-bg">
+    <main class="bg-2023-bg min-h-screen">
         <div
             class="flex min-h-screen flex-col content-center items-center justify-center gap-44 py-16"
         >
@@ -54,13 +54,13 @@ const description = computed(() => {
                     alt="Stylized SINF logo"
                 />
                 <span
-                    class="margin-0 absolute -bottom-5 right-0 text-xl font-bold text-2023-teal"
+                    class="margin-0 text-2023-teal absolute -bottom-5 right-0 text-xl font-bold"
                     >2023</span
                 >
             </div>
 
             <div
-                class="flex w-fit flex-col items-center gap-7 text-center text-2023-teal-dark"
+                class="text-2023-teal-dark flex w-fit flex-col items-center gap-7 text-center"
             >
                 <h1 class="text-8xl">{{ props.status }}</h1>
                 <p>{{ description }}</p>
@@ -72,7 +72,7 @@ const description = computed(() => {
                     Regressar
                 </PrimaryButton>
             </div>
-            <div class="text-center text-lg text-2023-teal-dark">
+            <div class="text-2023-teal-dark text-center text-lg">
                 <p class="font-bold">Mais informações</p>
                 <p>geral@sinf.pt</p>
             </div>

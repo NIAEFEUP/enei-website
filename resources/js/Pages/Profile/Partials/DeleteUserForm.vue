@@ -43,7 +43,7 @@ const closeModal = () => {
         <template #description> Apaga permanentemente a tua conta. </template>
 
         <template #content>
-            <div class="max-w-xl text-sm text-2023-red-dark">
+            <div class="text-2023-red-dark max-w-xl text-sm">
                 Depois de a tua conta ser excluída, todos os teus recursos e
                 dados serão apagados permanentemente. Antes de apagares a tua
                 conta, por favor faz o download de todos os dados ou informações

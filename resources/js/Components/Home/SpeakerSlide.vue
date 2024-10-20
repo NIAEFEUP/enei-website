@@ -40,12 +40,12 @@ const speakerName = (name: string) => {
         >
             <img
                 :src="speaker.profile_photo_url"
-                class="h-52 w-52 rounded-full border-2 border-solid border-2023-teal-dark object-cover"
+                class="border-2023-teal-dark h-52 w-52 rounded-full border-2 border-solid object-cover"
                 alt=""
             />
             <div
                 v-if="Object.keys(socialMedia).length > 0"
-                class="socials absolute -bottom-32 flex w-full flex-row items-center justify-center bg-2023-teal-dark pb-10 pt-1 transition-all"
+                class="socials bg-2023-teal-dark absolute -bottom-32 flex w-full flex-row items-center justify-center pb-10 pt-1 transition-all"
             >
                 <a
                     v-for="(social, key, idx) in socialMedia"
@@ -61,7 +61,7 @@ const speakerName = (name: string) => {
                 </a>
             </div>
         </div>
-        <p class="max-w-52 break-words py-4 text-lg text-2023-teal-dark">
+        <p class="max-w-52 text-2023-teal-dark break-words py-4 text-lg">
             {{ speaker.usertype?.display_name ?? speakerName(speaker.name) }}
         </p>
     </div>

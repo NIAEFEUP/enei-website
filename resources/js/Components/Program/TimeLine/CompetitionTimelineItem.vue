@@ -29,9 +29,9 @@ const formattedDate = (
 
 <template>
     <article
-        class="relative flex flex-col border-b-2 border-2023-teal-dark pb-4"
+        class="border-2023-teal-dark relative flex flex-col border-b-2 pb-4"
     >
-        <h2 class="text-2xl font-bold text-2023-orange">
+        <h2 class="text-2023-orange text-2xl font-bold">
             <em
                 ><Link
                     :href="route('competition.show', competition)"
@@ -41,7 +41,7 @@ const formattedDate = (
                 ></em
             >
         </h2>
-        <p class="text-lg text-2023-teal-dark">{{ competition.theme }}</p>
+        <p class="text-2023-teal-dark text-lg">{{ competition.theme }}</p>
         <span class="text-2023-teal">
             {{
                 formattedDate(
@@ -52,7 +52,7 @@ const formattedDate = (
             }}
         </span>
         <span
-            class="absolute -left-[calc(2rem+17.75px)] top-0 inline-flex h-8 w-8 items-center justify-center rounded-sm bg-2023-orange text-xl font-semibold text-white"
+            class="bg-2023-orange absolute -left-[calc(2rem+17.75px)] top-0 inline-flex h-8 w-8 items-center justify-center rounded-sm text-xl font-semibold text-white"
             >i</span
         >
     </article>

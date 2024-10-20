@@ -110,7 +110,7 @@ const submit = () => {
 
             <Link
                 :href="route('login')"
-                class="font-semibold text-2023-teal underline"
+                class="text-2023-teal font-semibold underline"
             >
                 Já tens conta?
             </Link>

@@ -117,7 +117,7 @@ onMounted(() => {
     <section class="h-full w-full">
         <div
             id="tab-picker"
-            class="flex flex-row justify-center gap-4 font-bold text-2023-teal"
+            class="text-2023-teal flex flex-row justify-center gap-4 font-bold"
         >
             <button
                 v-if="(day.talks?.length ?? 0) > 0"
@@ -157,12 +157,12 @@ onMounted(() => {
         v-if="
             (selectedType === 'talk' || selectedType === 'activity') && !noInfo
         "
-        class="mr-2 mt-5 max-w-2xl border border-solid border-black p-2.5 px-8 text-justify text-lg font-bold text-2023-teal shadow-md shadow-2023-teal"
+        class="text-2023-teal shadow-2023-teal mr-2 mt-5 max-w-2xl border border-solid border-black p-2.5 px-8 text-justify text-lg font-bold shadow-md"
     >
         {{ day.theme }}
     </p>
     <template v-if="noInfo">
-        <p class="pt-40 text-4xl font-bold text-2023-teal-dark">Em breve...</p>
+        <p class="text-2023-teal-dark pt-40 text-4xl font-bold">Em breve...</p>
     </template>
     <template v-else>
         <WithTimeline :start-time="times.start" :end-time="times.end">

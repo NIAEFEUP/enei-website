@@ -25,6 +25,11 @@ class StudentAssociation extends Model
         'code',
     ];
 
+    private function getPromoterCode(): string
+    {
+        return $this->user_id;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

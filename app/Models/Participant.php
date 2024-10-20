@@ -46,6 +46,11 @@ class Participant extends Model
         'quest_qr_code',
     ];
 
+    private function getPromoterCode(): string
+    {
+        return $this->user->id;
+    }
+
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);

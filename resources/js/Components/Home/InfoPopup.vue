@@ -37,11 +37,11 @@ const enroll = () => {
         @closed="cacheSeenInfo()"
     >
         <div
-            class="flex flex-col items-center gap-6 text-center text-xl text-2023-teal-dark"
+            class="text-2023-teal-dark flex flex-col items-center gap-6 text-center text-xl"
         >
             <img class="w-80" src="images/sinf logo.png" />
             <p>
-                A <span class="font-bold text-2023-red-dark">SINF</span> está
+                A <span class="text-2023-red-dark font-bold">SINF</span> está
                 mais interactiva do que nunca!
             </p>
             <ul class="flex flex-col items-center">
