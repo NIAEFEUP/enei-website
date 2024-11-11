@@ -64,7 +64,7 @@ const pageRoutes: Routes = {
                     <DropdownLink
                         :href="page !== 'home' ? `/#${page}` : route(page)"
                     >
-                        {{ label }}
+                        {{ $t(label) }}
                     </DropdownLink>
                 </template>
             </template>
@@ -73,7 +73,7 @@ const pageRoutes: Routes = {
             <img
                 class="w-24 max-md:w-24"
                 src="/images/logo-white.svg"
-                alt="Stylized SINF logo"
+                :alt="$t('general.sinfLogoAlt')"
             />
         </NavLink>
         <div class="ml-4 hidden w-full min-w-fit md:flex lg:gap-4">
@@ -89,7 +89,7 @@ const pageRoutes: Routes = {
                     "
                     :active="page === route().current()"
                 >
-                    {{ label }}
+                    {{ $t(label) }}
                 </NavLink>
             </template>
             <!-- COMPETITIONS DROPDOWN -->
@@ -99,7 +99,9 @@ const pageRoutes: Routes = {
                 width="32"
             >
                 <template #trigger>
-                    <DropdownTrigger>Competições</DropdownTrigger>
+                    <DropdownTrigger>{{
+                        $t("components.navbar.competitions")
+                    }}</DropdownTrigger>
                 </template>
                 <template #content>
                     <template
@@ -129,16 +131,28 @@ const pageRoutes: Routes = {
                         </template>
                         <template #content>
                             <DropdownLink :href="route('profile.show')">
-                                Perfil
+                                {{
+                                    $t(
+                                        "components.navbar.profileDropdown.profile",
+                                    )
+                                }}
                             </DropdownLink>
                             <DropdownLink
                                 v-if="isAdmin"
                                 :href="route('admin.index')"
                             >
-                                Administração
+                                {{
+                                    $t(
+                                        "components.navbar.profileDropdown.admin",
+                                    )
+                                }}
                             </DropdownLink>
                             <DropdownLink :href="route('logout')" method="post">
-                                Logout
+                                {{
+                                    $t(
+                                        "components.navbar.profileDropdown.logout",
+                                    )
+                                }}
                             </DropdownLink>
                         </template>
                     </Dropdown>

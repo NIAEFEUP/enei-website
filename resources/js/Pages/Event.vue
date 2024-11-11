@@ -43,7 +43,7 @@ const colorPicker = () => {
 </script>
 
 <template>
-    <AppLayout title="Evento">
+    <AppLayout :title="$t('pages.event.title')">
         <!-- speaker/event intro -->
         <section class="mx-9 flex flex-col gap-6 pt-10">
             <SpeakerInfo
@@ -126,21 +126,21 @@ const colorPicker = () => {
             class="flex w-full flex-col items-center gap-4 place-self-center py-24"
         >
             <p
-                class="flex w-fit flex-col text-center text-3xl font-bold text-2023-red"
+                class="flex w-fit flex-col gap-2 text-center text-3xl font-bold text-2023-red"
             >
-                <span v-if="hasJoined">Vemo-nos lá!</span>
-                <span v-else-if="!isEnrolled"
-                    >Ainda não te inscreveste na SINF!</span
-                >
+                <span v-if="hasJoined">{{ $t("pages.event.seeYou") }}</span>
+                <span v-else-if="!isEnrolled">{{
+                    $t("pages.event.notEnrolled")
+                }}</span>
                 <template v-else-if="canJoin">
-                    <span>Vamos a isto?</span>
+                    <span>{{ $t("pages.event.callToAction") }}</span>
                     <span v-if="event.capacity" class="text-lg">
-                        Ainda temos
-                        {{ event.capacity - enrollmentCount }}
-                        lugares.
+                        {{ $t("pages.event.spots.pre") }}
+                        {{ event.capacity - (event.enrollments?.length ?? 0) }}
+                        {{ $t("pages.event.spots.pos", event.capacity) }}
                     </span>
                 </template>
-                <span v-else>Evento esgotado!</span>
+                <span v-else>{{ $t("pages.event.full") }}</span>
             </p>
 
             <PrimaryButton

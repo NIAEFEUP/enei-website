@@ -59,7 +59,7 @@ const size = computed(() => sizes[props.idx % sizes.length]); // TODO: we know f
             </template>
             <template v-else>
                 <p class="flex w-fit place-self-center text-2xl font-bold">
-                    Em breve...
+                    {{ $t("general.soon") }}
                 </p>
             </template>
         </div>
@@ -92,7 +92,7 @@ const size = computed(() => sizes[props.idx % sizes.length]); // TODO: we know f
                 <p
                     class="grid place-self-center self-center text-center text-2xl font-bold"
                 >
-                    Em breve...
+                    {{ $t("general.soon") }}
                 </p>
             </template>
         </div>

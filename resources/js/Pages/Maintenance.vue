@@ -79,7 +79,7 @@ onMounted(() => {
                 <p
                     class="mr-2 w-48 bg-enei-beige p-2.5 px-8 text-center font-space-grotesk text-lg font-bold text-enei-blue uppercase"
                 >
-                    Brevemente
+                    {{ $t("pages.maintenance.soon") }}
                 </p>
             </div>
         </section>
