@@ -22,7 +22,7 @@
         "meilisearch/meilisearch-php": "^1.4",
         "motomedialab/laravel-vite-helper": "^1.4",
         "staudenmeir/eloquent-has-many-deep": "^1.18",
-        "symfony/http-client": "^6.3",
+        "symfony/http-client": "^7.1",
         "symfony/mailgun-mailer": "^6.3",
         "tightenco/ziggy": "^1.0"
     },
