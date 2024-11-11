@@ -15,7 +15,6 @@ class QuestController extends Controller
         $request->validate([
             'quest_code' => 'required|exists:participants,quest_code',
         ]);
-
         $edition = $request->input('edition');
         $participant = Participant::firstWhere('quest_code', $request->get('quest_code'));
         $enrollment = $participant->enrollments()->where('edition_id', $edition?->id)->first();
@@ -50,4 +49,5 @@ class QuestController extends Controller
 
         return redirect()->back()->banner('Tarefa atribuída com sucesso!');
     }
+
 }
