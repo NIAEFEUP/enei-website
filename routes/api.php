@@ -6,6 +6,7 @@ use App\Http\Controllers\QuestApiController;
 use Illuminate\Support\Facades\DB;
 use App\Models\Participant;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::middleware('auth.token')->post('/quest/{quest}/give', [QuestApiController::class, 'give']);
+
+Route::prefix('payment/mbway')->group(function () {
+    Route::post('/', [PaymentController::class, 'initiatePayment'])->name('payment.mbway.initiate');
+    Route::get('/status', [PaymentController::class, 'checkPaymentStatus'])->name('payment.mbway.status');
+});

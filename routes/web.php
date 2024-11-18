@@ -27,6 +27,7 @@ use App\Http\Controllers\StaffCRUDController;
 use App\Http\Controllers\StandCRUDController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserCRUDController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -132,3 +133,4 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         });
     }
 );
+
