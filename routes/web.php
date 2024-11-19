@@ -27,6 +27,7 @@ use App\Http\Controllers\StaffCRUDController;
 use App\Http\Controllers\StandCRUDController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserCRUDController;
+use App\Http\Controllers\KeycloakAuthController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -67,6 +68,9 @@ Route::prefix('/event')->name('event')->group(function () {
         Route::put('/leave', [EventController::class, 'leave'])->name('.leave');
     });
 });
+
+Route::get('auth/keycloak', [KeycloakAuthController::class, 'login'])->name('keycloak.login');
+Route::get('auth/keycloak/callback', [KeycloakAuthController::class, 'callback'])->name('keycloak.callback');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(
     function () {
