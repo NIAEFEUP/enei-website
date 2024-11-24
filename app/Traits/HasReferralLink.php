@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Libs\JWTLib;
+use App\Services\HashIdService;
 
 trait HasReferralLink
 {
@@ -10,16 +10,8 @@ trait HasReferralLink
 
     public function getReferralLink(): string
     {
-        $jwt_signer = new JWTLib('TODO: update this to use signer registered to application container. That one should be instantiated with a key from env');
+        $referral_code = (new HashIdService())->encode($this->getPromoterCode());
 
-        $payload = [
-            'promoter' => $this->getPromoterCode(),
-        ];
-
-        $code = $jwt_signer->generate($payload);
-
-        $link = route('register_with_promoter', ['promoter' => $code]);
-
-        return $link;
+        return route('register', ['ref' => $referral_code]);
     }
 }

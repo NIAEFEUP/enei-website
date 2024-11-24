@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\Participant;
 use App\Models\StudentAssociation;
 use App\Models\User;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -27,14 +28,11 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
-            'promoter' => ['nullable', 'string'],
         ])->validate();
 
-        $promoter = $input['promoter'] ?? null;
+        $referral_code = Cookie::get("referral");
 
-        $promoter_code = null;
-
-        if (! is_null($promoter)) {
+        if (! is_null($referral_code)) {
 
             /*
             $participant = Participant::firstWhere('code', $promoter);

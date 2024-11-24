@@ -12,6 +12,7 @@
         "fedeisas/laravel-mail-css-inliner": "^5.2",
         "firebase/php-jwt": "^6.10",
         "guzzlehttp/guzzle": "^7.2",
+        "hashids/hashids": "^5.0",
         "http-interop/http-factory-guzzle": "^1.2",
         "inertiajs/inertia-laravel": "^0.6.8",
         "laravel/framework": "^10.10",
