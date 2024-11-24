@@ -25,6 +25,7 @@ use App\Models\SponsorTier;
 use App\Models\Staff;
 use App\Models\Stand;
 use App\Models\User;
+use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +56,7 @@ class DatabaseSeeder extends Seeder
         EventType::truncate();
         Participant::truncate();
         Product::truncate();
+        Order::truncate();
         Quest::truncate();
         Slot::truncate();
         SocialMedia::truncate();
@@ -139,6 +141,9 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('Creating the products');
         $products = Product::factory(10)->recycle($edition)->create();
+
+        $this->command->info('Creating the orders');
+        $orders = Order::factory(100)->recycle($participants)->recycle($products)->create();
 
         $this->command->info('Creating the competitions');
         $competitions = Competition::factory(3)->recycle($edition)->create();
