@@ -21,6 +21,7 @@ class QuestFactory extends Factory
             'name' => fake()->words(3, true),
             'category' => fake()->randomElement(['COMPANY', 'TALK', 'WORKSHOP', 'MILESTONE', 'TEAMBUILDING']),
             'edition_id' => Edition::factory(),
+            'phone_number' => fake()->phoneNumber(),
         ];
     }
 }

@@ -12,17 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->foreignId('participant_id') // Foreign key for the participant
+            $table->id(); 
+            $table->foreignId('participant_id') 
                   ->constrained('participants')
-                  ->cascadeOnDelete(); // Deletes order if participant is deleted
-            $table->foreignId('product_id') // Foreign key for the product
+                  ->cascadeOnDelete(); 
+            $table->foreignId('product_id') 
                   ->constrained('products')
-                  ->cascadeOnDelete(); // Deletes order if product is deleted
-            $table->integer('quantity'); // Quantity of the product in the order
-            $table->decimal('total', 10, 2); // Total cost of the order
-            $table->string('state')->default('pending'); // State of the order
-            $table->timestamps(); // Created_at and updated_at timestamps
+                  ->cascadeOnDelete(); 
+            $table->integer('quantity'); 
+            $table->decimal('total', 10, 2);
+            $table->string('state')->default('pending'); 
+            $table->string('phone_number');
+            $table->timestamps(); 
         });
     }
 

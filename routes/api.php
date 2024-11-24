@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Participant;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\PaymentController;
-
+use App\Http\Controllers\OrderController;   
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,4 +27,11 @@ Route::middleware('auth.token')->post('/quest/{quest}/give', [QuestApiController
 Route::prefix('payment/mbway')->group(function () {
     Route::post('/', [PaymentController::class, 'initiatePayment'])->name('payment.mbway.initiate');
     Route::get('/status', [PaymentController::class, 'checkPaymentStatus'])->name('payment.mbway.status');
+});
+
+//Dummy for now of course this needs auth xd
+Route::prefix('/payment')->name('payment')->group(function () {
+    Route::post('/create', [OrderController::class, 'createOrder'])->name('.create');
+
+    Route::get('/{id}', [OrderController::class, 'getOrder'])->name('.status');
 });

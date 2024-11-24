@@ -24,6 +24,7 @@ class Order extends Model
         'quantity',
         'total',
         'state',
+        'phone_number',
     ];
 
 
@@ -43,6 +44,7 @@ class Order extends Model
         return $this->belongsTo(Product::class);
     }
     
+    
     public function toSearchableArray(): array
     {
         return [
@@ -52,6 +54,7 @@ class Order extends Model
         'quantity' => $this->quantity,
         'total' => $this->total,
         'state' => $this->state,
+        'phone_number' => $this->phone_number,
         ];
     }
 }
