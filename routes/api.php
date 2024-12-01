@@ -6,7 +6,6 @@ use App\Http\Controllers\QuestApiController;
 use Illuminate\Support\Facades\DB;
 use App\Models\Participant;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrderController;   
 /*
 |--------------------------------------------------------------------------
@@ -25,8 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth.token')->post('/quest/{quest}/give', [QuestApiController::class, 'give']);
 
 Route::prefix('payment/mbway')->group(function () {
-    Route::post('/', [PaymentController::class, 'initiatePayment'])->name('payment.mbway.initiate');
-    Route::get('/status', [PaymentController::class, 'checkPaymentStatus'])->name('payment.mbway.status');
+    Route::post('/', [OrderController::class, 'createOrder'])->name('payment.mbway.initiate');
+    Route::get('/status/{id}', [OrderController::class, 'getOrder'])->name('payment.mbway.status');
 });
 
 //Dummy for now of course this needs auth xd

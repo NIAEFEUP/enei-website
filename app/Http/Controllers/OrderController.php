@@ -13,7 +13,7 @@ class OrderController extends Controller
      */
     public function createOrder(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'participant_id' => 'required|integer',
             'product_id' => 'required|integer',
             'quantity' => 'required|integer',
@@ -24,23 +24,32 @@ class OrderController extends Controller
 
         // Create the order in the database
         $order = Order::create([
-            'participant_id' => $validatedData['participant_id'],
-            'product_id' => $validatedData['product_id'],
-            'quantity' => $validatedData['quantity'],
-            'total' => $validatedData['total'],
-            'state' => 'Pending',
+            'participant_id' => $request->participant_id,
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity,
+            'total' => $request->total,
+            'state' => 'Unitialized',
+            'phone_number' => $request->phone_number,
         ]);
+
+        if($request->total > 500)
+        {
+            return response()->json([
+                'order' => $order,
+                'message' => 'Total amount exceeds the limit of 500.00',
+            ], 400);
+        }
 
         // Prepare payment data
         $mbWayKey = env('IFTHENPAY_MBWAY_KEY');
-        $mobileNumber = '351#' . $validatedData['phone_number']; // Add country code prefix
+        $mobileNumber = '351#' . $request->phone_number; // Add country code prefix
         $data = [
             'mbWayKey' => $mbWayKey,
             'orderId' => $order->id,
             'amount' => number_format($order->total, 2, '.', ''), // Ensure correct decimal format
             'mobileNumber' => $mobileNumber,
-            'email' => $validatedData['email'] ?? null,
-            'description' => 'Payment for order #' . $order->id,
+            'email' => $request->email ?? null,
+            'description' => 'ENEI Payment for order #' . $order->id,
         ];
 
         // Make API request to initiate MB WAY payment
@@ -48,6 +57,9 @@ class OrderController extends Controller
 
         if ($response->successful()) {
             $responseData = $response->json();
+            $order->request_id = $responseData['RequestId'];
+            $order->state = 'Pending';
+            $order->save();
 
             return response()->json([
                 'order' => $order,
@@ -75,17 +87,19 @@ class OrderController extends Controller
         }
 
         // Check payment status if `requestId` is provided
-        if ($request->has('requestId')) {
+        if ($order->id) {
             $mbWayKey = env('IFTHENPAY_MBWAY_KEY');
-            $requestId = $request->get('requestId');
+            $requestId = $order->request_id;
 
             $response = Http::get("https://api.ifthenpay.com/spg/payment/mbway/status", [
                 'mbWayKey' => $mbWayKey,
                 'requestId' => $requestId,
             ]);
+   
 
             if ($response->successful()) {
                 $statusData = $response->json();
+    
 
                 // Update order state based on payment status
                 $paymentStatus = $statusData['Status'];

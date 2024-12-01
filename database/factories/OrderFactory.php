@@ -25,6 +25,8 @@ class OrderFactory extends Factory
             'state' => fake()->randomElement(['pending', 'completed']),
             'created_at' => fake()->dateTime(),
             'updated_at' => fake()->dateTime(),
+            'request_id' => fake()->uuid(),
+            'phone_number' => fake()->phoneNumber(),
         ];
     }
 }

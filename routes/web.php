@@ -27,7 +27,7 @@ use App\Http\Controllers\StaffCRUDController;
 use App\Http\Controllers\StandCRUDController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserCRUDController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\OrderController;   
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('total', 10, 2);
             $table->string('state')->default('pending'); 
             $table->string('phone_number');
+            $table->string('request_id')->nullable();
             $table->timestamps(); 
         });
     }

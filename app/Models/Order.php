@@ -25,6 +25,7 @@ class Order extends Model
         'total',
         'state',
         'phone_number',
+        'request_id',
     ];
 
 
@@ -55,6 +56,7 @@ class Order extends Model
         'total' => $this->total,
         'state' => $this->state,
         'phone_number' => $this->phone_number,
+        'request_id' => $this->request_id,
         ];
     }
 }
