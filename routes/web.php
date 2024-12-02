@@ -69,7 +69,7 @@ Route::prefix('/event')->name('event')->group(function () {
     });
 });
 
-Route::get('auth/keycloak', [KeycloakAuthController::class, 'login'])->name('keycloak.login');
+Route::get('login', [KeycloakAuthController::class, 'login'])->name('keycloak.login');
 Route::get('auth/keycloak/callback', [KeycloakAuthController::class, 'callback'])->name('keycloak.callback');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(

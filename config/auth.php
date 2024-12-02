@@ -64,10 +64,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'sso_users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\SSOUser::class,
-        ]
 
         // 'users' => [
         //     'driver' => 'database',

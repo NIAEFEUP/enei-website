@@ -16,16 +16,20 @@ class KeycloakAuthController extends Controller
     public function callback() {
         try {
             $ssoUser = Socialite::driver('keycloak')->user();
-
-            $createUser = new CreateNewUser();
-            $appUser = $createUser->create([
-                'name' => $ssoUser->getName(),
-                'email' => $ssoUser->getEmail(),
-                'provider' => "keycloak",
-                'terms' => 'accepted'
-            ]);
-
-            auth()->login($appUser);
+            
+            if(User::where('email', $ssoUser->getEmail())->exists()) {
+                $appUser = User::where('email', $ssoUser->getEmail())->first();
+                auth()->login($appUser);
+            } else {
+                $createUser = new CreateNewUser();
+                $appUser = $createUser->create([
+                    'name' => $ssoUser->getName(),
+                    'email' => $ssoUser->getEmail(),
+                    'provider' => "keycloak",
+                    'terms' => 'accepted'
+                ]);
+                auth()->login($appUser);
+            }
 
             return redirect()->route('home');
         } catch (\Exception $e) {
