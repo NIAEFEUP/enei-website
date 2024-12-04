@@ -32,7 +32,7 @@
         "leaflet": "^1.9.4",
         "oh-vue-icons": "^1.0.0-rc3",
         "postcss": "^8.4.31",
-        "prettier": "^3.0.3",
+        "prettier": "^3.4.2",
         "prettier-plugin-tailwindcss": "^0.5.6",
         "tailwindcss": "^3.3.5",
         "typescript": "^5.2.2",
