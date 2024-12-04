@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->unique()->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->string('name');
-            $table->string('code');
             // $table->integer('points')->unsigned()->default(0);
         });
 

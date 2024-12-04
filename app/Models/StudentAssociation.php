@@ -22,7 +22,6 @@ class StudentAssociation extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'code',
     ];
 
     private function getPromoterCode(): string

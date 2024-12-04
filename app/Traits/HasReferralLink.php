@@ -8,10 +8,13 @@ trait HasReferralLink
 {
     abstract private function getPromoterCode(): string;
 
+    public function getReferralCode(): string
+    {
+        return (new HashIdService)->encode($this->getPromoterCode());
+    }
+
     public function getReferralLink(): string
     {
-        $referral_code = (new HashIdService())->encode($this->getPromoterCode());
-
-        return route('register', ['ref' => $referral_code]);
+        return route('register', ['ref' => $this->getReferralCode()]);
     }
 }

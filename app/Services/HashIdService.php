@@ -6,7 +6,6 @@ use Hashids\Hashids;
 
 class HashIdService
 {
-
     public function __construct(
         public $hashIds = new Hashids('', 8),
     ) {}

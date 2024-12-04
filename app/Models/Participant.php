@@ -48,7 +48,7 @@ class Participant extends Model
 
     private function getPromoterCode(): string
     {
-        return $this->user->id;
+        return $this->user_id;
     }
 
     public function enrollments(): HasMany
@@ -78,7 +78,7 @@ class Participant extends Model
 
     public function promoter(): BelongsTo
     {
-        return $this->belongsTo(StudentAssociation::class, 'promoter');
+        return $this->belongsTo(StudentAssociation::class, 'promoter', 'user_id');
     }
 
     public function toSearchableArray(): array

@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('participants', function (Blueprint $table) {
-            $table->foreignIdFor(StudentAssociation::class, column: 'promoter')->nullable()->constrained(table: with(new StudentAssociation)->getTable())->cascadeOnDelete();
+            $table->foreignIdFor(StudentAssociation::class, column: 'promoter')->nullable()->constrained(table: with(new StudentAssociation)->getTable())->nullOnDelete();
         });
     }
 
