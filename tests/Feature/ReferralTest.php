@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Services\HashIdService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class ReferralTest extends TestCase
@@ -93,10 +92,14 @@ class ReferralTest extends TestCase
         $referred_participant = Participant::create(['user_id' => $referred_user->id, 'promoter' => null]);
         $referred_user->usertype()->associate($referred_participant);
         $referred_user->save();
+
         $referred_participant = $referred_participant->refresh();
 
         $referral_user_ref_code = $referral_participant->getReferralCode();
         ReferralPointsController::AttributePoints($referred_participant, $referral_user_ref_code);
+
+        $referral_participant = $referral_participant->refresh();
+        $referred_participant = $referred_participant->refresh();
 
         $this->assertEquals(
             (new HashIdService())->decode($referral_user_ref_code),
@@ -104,7 +107,8 @@ class ReferralTest extends TestCase
         );
         $this->assertNull($referral_participant->promoter);
         $this->assertNull($referred_participant->promoter);
-        // TODO: check points
+        $this->assertEquals(ReferralPointsController::$ParticipantPoints, $referral_participant->points);
+        $this->assertEquals(0, $referred_participant->points);
     }
 
 
@@ -125,7 +129,6 @@ class ReferralTest extends TestCase
         );
         $referral_user->usertype()->associate($referral_association);
         $referral_user->save();
-        $referral_association = $referral_association->refresh();
 
 
         $referred_user = User::create([
@@ -135,107 +138,90 @@ class ReferralTest extends TestCase
             'usertype_id' => '0',
             'usertype_type' => Participant::class,
         ]);
-        $referred_participant = Participant::create(['user_id' => $referred_user->id, 'promoter' => null]);
+        $referred_participant = Participant::create(['user_id' => $referred_user->id]);
         $referred_user->usertype()->associate($referred_participant);
         $referred_user->save();
-        $referred_participant = $referred_participant->refresh();
-
 
         $referral_code = $referral_association->getReferralCode();
 
-
         ReferralPointsController::AttributePoints($referred_participant, $referral_code);
+
+        $referral_association = $referral_association->refresh();
+        $referred_participant = $referred_participant->refresh();
 
         $this->assertEquals(
             (new HashIdService())->decode($referral_code),
             $referral_user->id
         );
         $this->assertNull($referred_participant->promoter);
-        // TODO: check points
+        $this->assertEquals(ReferralPointsController::$StudentAssociationPoints, $referral_association->points);
+        $this->assertEquals(0, $referred_participant->points);
     }
 
 
-
-
-    /**
-
-    public function test_new_users_can_register_without_promoter_code(): void
+    public function test_referral_user_referred_by_user_by_association(): void
     {
-        if (! Features::enabled(Features::registration())) {
-            $this->markTestSkipped('Registration support is not enabled.');
-
-            return;
-        }
-
-        $username = 'Test User';
-        $password = 'password';
-
-        $response = $this->post('/register/', [
-            'name' => $username,
-            'email' => 'test@example.com',
-            'password' => $password,
-            'password_confirmation' => $password,
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature(),
-            'promoter' => null,
-        ]);
-
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
-
-        $participant = User::firstWhere('name', $username);
-        $this->assertNull($participant->code);
-    }
-
-    public function test_new_users_can_register_with_promoter_code(): void
-    {
-        if (! Features::enabled(Features::registration())) {
-            $this->markTestSkipped('Registration support is not enabled.');
-
-            return;
-        }
-
-        $username = 'Test User';
-        $password = 'password';
-        $promoter_code = 'NUC-1';
-        $association_name = 'Test Association';
-
-        $association_data = [
-            'name' => $association_name,
+        $referral_user = User::create([
+            'name' => "Test Association",
             'email' => 'test@association.com',
-            'password' => Hash::make($password),
+            'password' => Hash::make('testpassword'),
             'usertype_id' => '0',
             'usertype_type' => StudentAssociation::class,
-        ];
-
-        $association_user = User::create($association_data);
-        $test_association = StudentAssociation::create(
+        ]);
+        $referral_association = StudentAssociation::create(
             [
-                'user_id' => $association_user->id,
-                'name' => $association_data['name'],
-                'code' => $promoter_code,
+                'user_id' => $referral_user->id,
+                'name' => $referral_user->name,
             ]
         );
-        $association_user->usertype()->associate($test_association);
-        $association_user->save();
+        $referral_user->usertype()->associate($referral_association);
+        $referral_user->save();
 
-        $response = $this->post('/register/', [
-            'name' => $username,
-            'email' => 'test@example.com',
-            'password' => $password,
-            'password_confirmation' => $password,
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature(),
-            'promoter' => $promoter_code,
+
+        $first_referred_user = User::create([
+            'name' => "Jane Doe",
+            'email' => "jane@doe.com",
+            'password' => Hash::make('testpassword2'),
+            'usertype_id' => '0',
+            'usertype_type' => Participant::class,
         ]);
+        $first_referred_participant = Participant::create(['user_id' => $first_referred_user->id]);
+        $first_referred_user->usertype()->associate($first_referred_participant);
+        $first_referred_user->save();
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $first_referral_code = $referral_association->getReferralCode();
 
-        // Check if StudentAssociation got the points
-        $student_association = StudentAssociation::firstWhere('code', $promoter_code);
-        $this->assertEquals($association_name, $student_association->name);
-        $this->assertNotNull($student_association->code);
-        $this->assertEquals(20, $student_association->points);
+        ReferralPointsController::AttributePoints($first_referred_participant, $first_referral_code);
+
+        $referral_association = $referral_association->refresh();
+        $first_referred_participant = $first_referred_participant->refresh();
+
+        $second_referred_user = User::create([
+            'name' => "John Doe",
+            'email' => "john@doe.com",
+            'password' => Hash::make('testpassword'),
+            'usertype_id' => '0',
+            'usertype_type' => Participant::class,
+        ]);
+        $second_reffered_participant = Participant::create(['user_id' => $second_referred_user->id]);
+        $second_referred_user->usertype()->associate($second_reffered_participant);
+        $second_referred_user->save();
+
+        $second_referral_code = $first_referred_participant->getReferralCode();
+
+        ReferralPointsController::AttributePoints($first_referred_participant, $second_referral_code);
+
+        $referral_association = $referral_association->refresh();
+        $first_referred_participant = $first_referred_participant->refresh();
+        $second_reffered_participant = $second_reffered_participant->refresh();
+
+        $this->assertEquals(
+            (new HashIdService())->decode($second_referral_code),
+            $first_referred_user->id
+        );
+        $this->assertNull($first_referred_participant->promoter);
+        $this->assertEquals(ReferralPointsController::$StudentAssociationPoints + ReferralPointsController::$ParticipantPoints, $referral_association->points);
+        $this->assertEquals(ReferralPointsController::$ParticipantPoints, $first_referred_participant->points);
+        $this->assertEquals(0, $second_reffered_participant->points);
     }
-
-     */
 }

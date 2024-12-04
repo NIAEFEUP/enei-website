@@ -8,6 +8,9 @@ use App\Services\HashIdService;
 
 class ReferralPointsController extends Controller
 {
+    static $StudentAssociationPoints = 20;
+    static $ParticipantPoints = 30;
+
     /**
      * Validate and create a newly registered user.
      *
@@ -25,38 +28,18 @@ class ReferralPointsController extends Controller
             }
 
             if ($referral_user->isStudentAssociation()) {
-                // $referred_participant->promoter = $user->id;
-                dump("referred", $referred_participant->attributesToArray());
-                dump("referral", $referral_user->attributesToArray());
-                // dump($referred_participant->promoter);
                 $referred_participant->update(['promoter' => $referral_user->user_id]);
-            }
-
-
-            dump($referral_user->name);
-
-            /*
-            $participant = Participant::firstWhere('code', $promoter);
-            if (!is_null($participant)) {
-                $participant->points = $participant->points + 10;
-                $promoter = $participant->code;
-            }
-            */
-
-            /*
-            $student_association = StudentAssociation::firstWhere('code', $promoter);
-            if (!is_null($student_association)) {
-                $student_association->points = $student_association->points + 20;
-
-                $promoter_code = $student_association->code;
-
-                // save
-                if (!is_null($promoter_code)) {
-                    // $participant->save();
-                    $student_association->save();
+                $referred_participant = $referred_participant->refresh();
+                // add points
+                $referral_user->points += ReferralPointsController::$StudentAssociationPoints;
+            } else if ($referral_user->isParticipant()) {
+                // add points
+                $referral_user->points += ReferralPointsController::$ParticipantPoints;
+                $referral_association = $referral_user->promoter;
+                if (! is_null($referral_association)) {
+                    $referral_association += ReferralPointsController::$StudentAssociationPoints;
                 }
             }
-            */
         }
     }
 }
