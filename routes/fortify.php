@@ -21,28 +21,12 @@ use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 use Laravel\Fortify\RoutePath;
 
-Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
+/*Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
     $enableViews = config('fortify.views', true);
-
-    // Authentication...
-    if ($enableViews) {
-        Route::get(RoutePath::for('login', '/login'), [AuthenticatedSessionController::class, 'create'])
-            ->middleware(['guest:'.config('fortify.guard')])
-            ->name('login');
-    }
 
     $limiter = config('fortify.limiters.login');
     $twoFactorLimiter = config('fortify.limiters.two-factor');
     $verificationLimiter = config('fortify.limiters.verification', '6,1');
-
-    Route::post(RoutePath::for('login', '/login'), [AuthenticatedSessionController::class, 'store'])
-        ->middleware(array_filter([
-            'guest:'.config('fortify.guard'),
-            $limiter ? 'throttle:'.$limiter : null,
-        ]));
-
-    Route::post(RoutePath::for('logout', '/logout'), [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
 
     // Password Reset...
     if (Features::enabled(Features::resetPasswords())) {
@@ -167,4 +151,4 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         Route::post(RoutePath::for('two-factor.recovery-codes', '/user/two-factor-recovery-codes'), [RecoveryCodeController::class, 'store'])
             ->middleware($twoFactorMiddleware);
     }
-});
+});*/
