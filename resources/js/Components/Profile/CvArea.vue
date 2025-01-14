@@ -53,7 +53,7 @@ const clearCVFileInput = () => {
 <template>
     <div class="flex w-full flex-col py-12 md:px-32">
         <div
-            class="flex justify-between border-solid border-black bg-2023-teal-dark p-3 px-8 font-bold text-2023-bg"
+            class="bg-2023-teal-dark text-2023-bg flex justify-between border-solid border-black p-3 px-8 font-bold"
             :class="[previewOpen ? 'border-x border-t' : 'border']"
         >
             <div class="flex items-center">
@@ -65,7 +65,7 @@ const clearCVFileInput = () => {
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="w-6 text-2023-bg"
+                        class="text-2023-bg w-6"
                         viewBox="0 0 512 512"
                     >
                         <path
@@ -92,7 +92,7 @@ const clearCVFileInput = () => {
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="w-6 text-2023-bg"
+                    class="text-2023-bg w-6"
                     viewBox="0 0 512 512"
                 >
                     <path
@@ -107,7 +107,7 @@ const clearCVFileInput = () => {
             </button>
         </div>
         <div
-            class="mx-4 h-fit items-center justify-center border-x border-b border-solid border-black bg-2023-red-dark p-6 font-bold text-2023-bg max-md:mx-2"
+            class="bg-2023-red-dark text-2023-bg mx-4 h-fit items-center justify-center border-x border-b border-solid border-black p-6 font-bold max-md:mx-2"
             :class="[previewOpen ? 'flex' : 'hidden']"
         >
             <object
@@ -124,7 +124,7 @@ const clearCVFileInput = () => {
                 target="_blank"
                 :href="item.usertype?.cv_url"
             >
-                <div class="flex text-2023-bg">
+                <div class="text-2023-bg flex">
                     <p class="mr-1">CV</p>
                     <OhVueIcon name="io-open" scale="1.3"></OhVueIcon>
                 </div>
@@ -139,7 +139,7 @@ const clearCVFileInput = () => {
                 !item?.usertype?.cv_path &&
                 $page.props.auth.user?.id == item.id
             "
-            class="mt-3 border-2 border-solid border-black p-3 text-2023-red"
+            class="text-2023-red mt-3 border-2 border-solid border-black p-3"
         >
             <p>
                 <span class="font-bold">Porque é que o deves fazer? </span>

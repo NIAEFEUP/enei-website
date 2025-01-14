@@ -21,7 +21,7 @@ defineProps<Props>();
             class="flex flex-col items-center px-10 py-10 md:px-40"
         >
             <h1
-                class="mb-10 w-fit border border-black bg-2023-red p-2 px-5 text-2xl font-bold text-white shadow-md shadow-2023-bg"
+                class="bg-2023-red shadow-2023-bg mb-10 w-fit border border-black p-2 px-5 text-2xl font-bold text-white shadow-md"
             >
                 Programa
             </h1>
@@ -39,7 +39,7 @@ defineProps<Props>();
                             "
                             as="span"
                             :only="['eventDay', 'queryDay']"
-                            class="inline-flex h-16 w-16 cursor-pointer items-center justify-center rounded-sm bg-2023-teal text-xl font-bold text-white transition"
+                            class="bg-2023-teal inline-flex h-16 w-16 cursor-pointer items-center justify-center rounded-sm text-xl font-bold text-white transition"
                             :class="{
                                 selected:
                                     day ==
@@ -52,14 +52,14 @@ defineProps<Props>();
                         </Link>
                     </template>
                 </div>
-                <span class="font-bold text-2023-orange">{{
+                <span class="text-2023-orange font-bold">{{
                     $d(new Date(eventDay.date), "long")
                 }}</span>
             </section>
             <ProgramDayPanel :key="eventDay.id" :day="eventDay" />
         </div>
         <div v-else class="flex items-center justify-center">
-            <p class="pt-80 text-center text-5xl font-bold text-2023-teal-dark">
+            <p class="text-2023-teal-dark pt-80 text-center text-5xl font-bold">
                 Em breve...
             </p>
         </div>

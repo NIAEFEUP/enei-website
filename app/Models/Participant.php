@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasCV;
+use App\Traits\HasReferralLink;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -20,6 +21,7 @@ class Participant extends Model
 {
     use HasCV;
     use HasFactory;
+    use HasReferralLink;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +31,7 @@ class Participant extends Model
     protected $fillable = [
         'user_id',
         'social_media_id',
+        'promoter',
     ];
 
     protected $with = ['socialMedia'];
@@ -42,6 +45,11 @@ class Participant extends Model
         'cv_url',
         'quest_qr_code',
     ];
+
+    private function getPromoterCode(): string
+    {
+        return $this->user_id;
+    }
 
     public function enrollments(): HasMany
     {
@@ -66,6 +74,11 @@ class Participant extends Model
     public function competitionTeams(): BelongsToMany
     {
         return $this->belongsToMany(CompetitionTeam::class)->using(CompetitionTeamParticipant::class);
+    }
+
+    public function promoter(): BelongsTo
+    {
+        return $this->belongsTo(StudentAssociation::class, 'promoter', 'user_id');
     }
 
     public function toSearchableArray(): array

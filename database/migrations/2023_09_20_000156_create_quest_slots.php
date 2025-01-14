@@ -151,13 +151,5 @@ return new class extends Migration
             AFTER INSERT OR UPDATE OR DELETE ON enrollment_quest
             FOR EACH ROW EXECUTE FUNCTION update_enrollment_points();
         ');
-
-        // Visit history
-        Schema::create('visit_history', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(\App\Models\Participant::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Company::class)->constrained()->cascadeOnDelete();
-            $table->timestamps();
-        });
     }
 };

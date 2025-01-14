@@ -1,5 +1,7 @@
 <?php
 
+// TODO: if Jetstream releases new versions that are interesting to use, we should update this file accordingly.
+
 use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
 use Laravel\Jetstream\Http\Controllers\Inertia\ApiTokenController;

@@ -117,23 +117,23 @@ const disableTwoFactorAuthentication = () => {
         <template #content>
             <h3
                 v-if="twoFactorEnabled && !confirming"
-                class="text-lg font-medium text-2023-teal"
+                class="text-2023-teal text-lg font-medium"
             >
                 Ativaste a autenticação de dois fatores.
             </h3>
 
             <h3
                 v-else-if="twoFactorEnabled && confirming"
-                class="text-lg font-medium text-2023-red-dark"
+                class="text-2023-red-dark text-lg font-medium"
             >
                 Conclui a autenticação de dois fatores.
             </h3>
 
-            <h3 v-else class="text-lg font-medium text-2023-red">
+            <h3 v-else class="text-2023-red text-lg font-medium">
                 Não ativaste a autenticação de dois fatores.
             </h3>
 
-            <div class="mt-3 max-w-xl text-sm text-2023-teal-dark">
+            <div class="text-2023-teal-dark mt-3 max-w-xl text-sm">
                 <p>
                     Quando a autenticação de dois fatores for ativada, ser-te-á
                     solicitado um token aleatório e seguro durante a
@@ -144,7 +144,7 @@ const disableTwoFactorAuthentication = () => {
 
             <div v-if="twoFactorEnabled">
                 <div v-if="qrCode">
-                    <div class="mt-4 max-w-xl text-sm text-2023-teal-dark">
+                    <div class="text-2023-teal-dark mt-4 max-w-xl text-sm">
                         <p v-if="confirming" class="font-semibold">
                             Para terminar de ativar a autenticação de dois
                             fatores, digitaliza o código QR a seguir usando a
@@ -161,13 +161,13 @@ const disableTwoFactorAuthentication = () => {
                     </div>
 
                     <div
-                        class="mt-4 inline-block bg-2023-bg p-2"
+                        class="bg-2023-bg mt-4 inline-block p-2"
                         v-html="qrCode"
                     />
 
                     <div
                         v-if="setupKey"
-                        class="mt-4 max-w-xl text-sm text-2023-teal-dark"
+                        class="text-2023-teal-dark mt-4 max-w-xl text-sm"
                     >
                         <p class="font-semibold">
                             Setup Key: <span v-html="setupKey"></span>

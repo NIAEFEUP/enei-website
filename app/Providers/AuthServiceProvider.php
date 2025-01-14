@@ -35,6 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('participant', fn (User $user) => $user->isParticipant());
         Gate::define('company', fn (User $user) => $user->isCompany());
         Gate::define('speaker', fn (User $user) => $user->isSpeaker());
+        Gate::define('student_association', fn (User $user) => $user->isStudentAssociation());
         Gate::define('staff', fn (User $user, Edition $edition) => $user->isStaff($edition));
 
         Gate::define('enroll', fn (?User $user, Edition $edition) => (
