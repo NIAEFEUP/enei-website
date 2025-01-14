@@ -74,6 +74,7 @@ ENV APP_ENV=${LARAVEL_ENV}
 RUN [ -z "${LARAVEL_ENV_FILE_KEY}" ] || ( mv .env.${LARAVEL_ENV} .env.${LARAVEL_ENV}.encrypted && php artisan env:decrypt -n --env=${LARAVEL_ENV} --key=${LARAVEL_ENV_FILE_KEY} )
 
 EXPOSE 8888
+HEALTHCHECK NONE
 
 COPY --chown=nobody ./etc/entrypoint.nocache.sh /entrypoint.sh
 CMD [ "/entrypoint.sh" ]
