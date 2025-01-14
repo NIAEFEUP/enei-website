@@ -1,5 +1,5 @@
 # dev-dependencies
-FROM composer:2 AS dev-dependencies
+FROM composer:2.8.2 AS dev-dependencies
 WORKDIR /app
 
 COPY composer.json composer.lock ./
@@ -19,7 +19,7 @@ COPY --from=dev-dependencies /app/vendor ./vendor
 RUN npm run build
 
 # laravel-build
-FROM composer:2 AS laravel-build
+FROM composer:2.8.2 AS laravel-build
 WORKDIR /app
 
 COPY composer.json composer.lock artisan ./
